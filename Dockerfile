@@ -20,7 +20,7 @@ COPY ./checks.csv /usr/local/bin/checks.csv
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
 
 # changes required to run as non-root
-RUN touch /var/run/crond.pid && chown 33:33 /var/run/crond.pid
+RUN touch /var/run/crond.pid && chown 33:33 /var/run/crond.pid /usr/local/apache2/htdocs/index.html
 RUN chmod 777 /usr/local/apache2/logs 
 RUN chmod u+s /usr/sbin/cron
 
