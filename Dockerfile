@@ -20,14 +20,9 @@ COPY ./checks.csv /usr/local/bin/checks.csv
 RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
 
 # changes required to run as non-root
-RUN sed -i 's/\/var\/run\/crond.pid/\/tmp\/crond.pid/g' /etc/init.d/cron
 RUN chown 33:33 /usr/local/apache2/htdocs/index.html
 RUN chmod 777 /usr/local/apache2/logs 
-RUN chmod u+s /usr/sbin/cron
 
 USER www-data
 
-# Setup cron job
-RUN (crontab -l ; echo "*  *  *  *  * /usr/local/bin/tinystatus /usr/local/bin/checks.csv /usr/local/bin/incidents.txt  >| /usr/local/apache2/htdocs/index.html") | crontab
-
-CMD ( cron -f & ) && httpd -D FOREGROUND
+CMD while true; do /usr/local/bin/tinystatus /usr/local/bin/checks.csv /usr/local/bin/incidents.txt >| /usr/local/apache2/htdocs/index.html; sleep 60; done & /usr/local/apache2/bin/httpd -D FOREGROUND
