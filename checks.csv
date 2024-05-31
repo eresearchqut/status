@@ -1,5 +1,5 @@
+http,   200,  eResearch Portal,       https://eresearchqut.atlassian.net/servicedesk/customer/portals
 http,   200,  rVDI,                   https://rvdi.qut.edu.au
 http,   200,  XNAT,                   https://xnat.qut.edu.au/app/template/Login.vm
 http,   200,  Jupyter Hub,            https://jupyter.eres.qut.edu.au/hub/static/favicon.ico
 port,   0,    Lyra login node,        lyra.qut.edu.au 22
-http,   200,  eResearch Portal,       https://eresearchqut.atlassian.net/servicedesk/customer/portals
