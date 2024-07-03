@@ -16,7 +16,7 @@ https://eresearchqut.github.io/team-charter/
 
 ## Setup
 
-- `yarn install` - Starts the development server.
+- `yarn install` - Install the node dependencies.
 
 ## Commands
 
@@ -25,22 +25,6 @@ https://eresearchqut.github.io/team-charter/
 - `yarn run storybook` - Starts the Storybook UI.
 - `yarn run lint` - Runs ESLint on the project.
 - `yarn run format:fix` - Formats code for the entire project
-
-## State management
-
-For this starter kit we are not using a global state manager but instead storing state inside the routes for Next.js. For example, please look at the `/src/pages/counter-example.tsx` and `src/pages/fetch-example.tsx` files.
-
-## Testing
-
-### Unit testing
-
-The unit tests for the components can be found in the `__tests__` directory.
-
-```
-.
-├── StickyNote.test.tsx
-└── index.test.tsx
-```
 
 ### Storybook's Accessibility testing
 
