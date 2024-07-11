@@ -11,11 +11,15 @@ import {
   TableContainer,
   Tag,
   TagLabel,
+  Alert,
+  AlertIcon,
+  AlertTitle,
 } from "@chakra-ui/react";
 
 interface Service {
   name: string;
   status: string;
+  detected?: string;
   error?: string;
 }
 
@@ -25,30 +29,60 @@ interface Data extends Service {
 }
 
 export interface OperationalStatusData extends Data {
+  title: string;
   data?: Data;
+  displayOKOnly: boolean;
+  displayDisruptedOnly: boolean;
 }
 
 export const OperationalStatus: FunctionComponent<OperationalStatusData> = ({
+  title,
   data,
+  displayOKOnly = false,
+  displayDisruptedOnly = false,
 }) => {
+  const filteredData = displayOKOnly
+    ? data?.services.filter((service: any) => service?.status === "OK")
+    : displayDisruptedOnly
+      ? data?.services.filter((service: any) => service?.status !== "OK")
+      : data?.services;
+
+  const hasDisruptedService = (data: any) => {
+    return data?.services.some((service: any) => service?.status !== "OK");
+  };
+
   return (
     <Box>
       <Text as="b" fontSize="3xl">
-        Operational status
+        {title}
       </Text>
-      {data && data?.services.length > 0 ? (
+      {displayDisruptedOnly && hasDisruptedService(data) && (
+        <Alert status="error" variant="solid">
+          <AlertIcon />
+          <AlertTitle>
+            The following systems have service disruptions
+          </AlertTitle>
+        </Alert>
+      )}
+      {filteredData && filteredData.length > 0 ? (
         <TableContainer>
           <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>SERVICE</Th>
+                {!displayOKOnly && hasDisruptedService(data) && (
+                  <Th>DETECTED</Th>
+                )}
                 <Th isNumeric>STATUS</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {data?.services.map((service: any) => (
+              {filteredData.map((service: any) => (
                 <Tr key={service?.name}>
                   <Td>{service?.name}</Td>
+                  {!displayOKOnly && hasDisruptedService(data) && (
+                    <Td>{service?.detected}</Td>
+                  )}
                   <Td isNumeric>
                     <Tag
                       variant="subtle"
