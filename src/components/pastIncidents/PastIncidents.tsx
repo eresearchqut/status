@@ -15,22 +15,24 @@ interface Incident {
   reason: string;
 }
 
-interface Data extends Incident {
-  last_updated?: string;
+interface Data {
+  last_updated: string;
   incidents: Incident[];
 }
 
-export interface PastIncidentsData extends Data {
+export interface PastIncidentsProps {
   title: string;
   subTitle: string;
   data?: Data;
 }
 
-export const PastIncidents: FunctionComponent<PastIncidentsData> = ({
+export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
   title,
   subTitle,
   data,
 }) => {
+  if (!data || data?.incidents.length === 0) return null;
+
   return (
     <Box>
       <Flex direction="column" px={6} py={4}>
@@ -42,22 +44,18 @@ export const PastIncidents: FunctionComponent<PastIncidentsData> = ({
       <TableContainer>
         <Table>
           <Tbody>
-            {data && data?.incidents.length > 0 ? (
-              data.incidents.map((incident: any, index: number) => (
-                <Tr key={index}>
-                  <Td>
-                    <Text fontSize="2xl" as="b">
-                      {incident?.datetime_reported}
-                    </Text>
-                    <Text fontSize="1xl" my={2}>
-                      {incident?.reason}
-                    </Text>
-                  </Td>
-                </Tr>
-              ))
-            ) : (
-              <Tr></Tr>
-            )}
+            {data?.incidents.map((incident: any, index: number) => (
+              <Tr key={index}>
+                <Td>
+                  <Text fontSize="2xl" as="b">
+                    {incident?.datetime_reported}
+                  </Text>
+                  <Text fontSize="1xl" my={2}>
+                    {incident?.reason}
+                  </Text>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

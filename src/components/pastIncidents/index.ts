@@ -1,1 +1,1 @@
-export { PastIncidents, type PastIncidentsData } from "./PastIncidents";
+export { PastIncidents, type PastIncidentsProps } from "./PastIncidents";
