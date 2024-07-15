@@ -1,6 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { OperationalStatus, OperationalStatusProps } from "./OperationalStatus";
-import jsonData from "../../../public/status.json";
+import { OperationalStatus, ServiceStatus } from "./OperationalStatus";
 
 export default {
   title: "Component/OperationalStatus",
@@ -13,26 +12,81 @@ const Template: StoryFn<typeof OperationalStatus> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  title: "Display all",
-  data: jsonData as OperationalStatusProps["data"],
-};
-
-export const Operational = Template.bind({});
-Operational.args = {
-  ...Default.args,
   title: "Operational status",
-  displayOKOnly: true,
+  lastUpdated: "2024-07-02T15:53:42+1000",
+  services: [
+    {
+      name: "Jupyter Hub",
+      status: ServiceStatus.FAILURE,
+      error: "404",
+    },
+    {
+      name: "Lyra login node",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "XNAT",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "eResearch Portal",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "rVDI",
+      status: ServiceStatus.OK,
+    },
+  ],
 };
 
 export const Disruptions = Template.bind({});
 Disruptions.args = {
   ...Default.args,
   title: "Service disruptions",
-  displayDisruptedOnly: true,
+  filter: ServiceStatus.FAILURE,
 };
 
 export const NoDataAvailable = Template.bind({});
 NoDataAvailable.args = {
   title: "No available data",
-  data: undefined,
+  services: undefined,
+};
+
+export const OperationalWithDisruptedOnly = Template.bind({});
+OperationalWithDisruptedOnly.args = {
+  lastUpdated: "2024-07-02T15:53:42+1000",
+  services: [
+    {
+      name: "Jupyter Hub",
+      status: ServiceStatus.FAILURE,
+      error: "404",
+    },
+  ],
+  title: "Operational status",
+  filter: ServiceStatus.OK,
+};
+
+export const DisruptionsWithOKOnly = Template.bind({});
+DisruptionsWithOKOnly.args = {
+  lastUpdated: "2024-07-02T15:53:42+1000",
+  services: [
+    {
+      name: "Lyra login node",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "XNAT",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "eResearch Portal",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "rVDI",
+      status: ServiceStatus.OK,
+    },
+  ],
+  title: "Service disruptions",
+  filter: ServiceStatus.FAILURE,
 };

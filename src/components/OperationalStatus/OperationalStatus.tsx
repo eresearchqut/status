@@ -16,47 +16,46 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 
+export enum ServiceStatus {
+  OK = "OK",
+  FAILURE = "FAILURE",
+}
+
 interface Service {
   name: string;
-  status: string;
+  status: ServiceStatus;
   detected?: string;
   error?: string;
 }
 
-interface Data extends Service {
-  last_updated?: string;
-  services: Service[];
-}
-
-export interface OperationalStatusProps extends Data {
+export interface OperationalStatusProps {
   title: string;
-  data?: Data;
-  displayOKOnly: boolean;
-  displayDisruptedOnly: boolean;
+  lastUpdated: string;
+  services: Service[];
+  filter?: ServiceStatus;
 }
 
 export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
   title,
-  data,
-  displayOKOnly = false,
-  displayDisruptedOnly = false,
+  services = [],
+  filter = ServiceStatus.OK,
 }) => {
-  const filteredData = displayOKOnly
-    ? data?.services.filter((service: any) => service?.status === "OK")
-    : displayDisruptedOnly
-      ? data?.services.filter((service: any) => service?.status !== "OK")
-      : data?.services;
+  const filteredData = filter
+    ? services.filter((service) => service.status === filter)
+    : services;
 
-  const hasDisruptedService = (data: any) => {
-    return data?.services.some((service: any) => service?.status !== "OK");
-  };
+  const hasDisruptedService = filteredData?.some(
+    (service: any) => service?.status !== ServiceStatus.OK
+  );
+
+  if (filteredData.length === 0) return null;
 
   return (
     <Box>
       <Text as="b" fontSize="3xl">
         {title}
       </Text>
-      {displayDisruptedOnly && hasDisruptedService(data) && (
+      {hasDisruptedService && (
         <Alert status="error" variant="solid">
           <AlertIcon />
           <AlertTitle>
@@ -70,9 +69,7 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
             <Thead>
               <Tr>
                 <Th>SERVICE</Th>
-                {!displayOKOnly && hasDisruptedService(data) && (
-                  <Th>DETECTED</Th>
-                )}
+                {hasDisruptedService && <Th>DETECTED</Th>}
                 <Th isNumeric>STATUS</Th>
               </Tr>
             </Thead>
@@ -80,9 +77,7 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
               {filteredData.map((service: any) => (
                 <Tr key={service?.name}>
                   <Td>{service?.name}</Td>
-                  {!displayOKOnly && hasDisruptedService(data) && (
-                    <Td>{service?.detected}</Td>
-                  )}
+                  {hasDisruptedService && <Td>{service?.detected}</Td>}
                   <Td isNumeric>
                     <Tag
                       variant="subtle"
