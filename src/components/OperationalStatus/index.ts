@@ -1,4 +1,4 @@
 export {
   OperationalStatus,
-  type OperationalStatusData,
+  type OperationalStatusProps,
 } from "./OperationalStatus";

@@ -1,9 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { OperationalStatus, OperationalStatusData } from "./OperationalStatus";
+import { OperationalStatus, OperationalStatusProps } from "./OperationalStatus";
 import jsonData from "../../../public/status.json";
-
-const typedJsonData: OperationalStatusData["data"] =
-  jsonData as OperationalStatusData["data"];
 
 export default {
   title: "Component/OperationalStatus",
@@ -14,26 +11,24 @@ const Template: StoryFn<typeof OperationalStatus> = (args) => (
   <OperationalStatus {...args} />
 );
 
+export const Default = Template.bind({});
+Default.args = {
+  title: "Display all",
+  data: jsonData as OperationalStatusProps["data"],
+};
+
 export const Operational = Template.bind({});
 Operational.args = {
+  ...Default.args,
   title: "Operational status",
-  data: typedJsonData,
   displayOKOnly: true,
 };
 
 export const Disruptions = Template.bind({});
 Disruptions.args = {
+  ...Default.args,
   title: "Service disruptions",
-  data: typedJsonData,
   displayDisruptedOnly: true,
-};
-
-export const DisplayAllData = Template.bind({});
-DisplayAllData.args = {
-  title: "Service disruptions",
-  data: typedJsonData,
-  displayOKOnly: false,
-  displayDisruptedOnly: false,
 };
 
 export const NoDataAvailable = Template.bind({});

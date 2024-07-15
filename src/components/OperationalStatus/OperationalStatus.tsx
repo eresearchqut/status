@@ -28,14 +28,14 @@ interface Data extends Service {
   services: Service[];
 }
 
-export interface OperationalStatusData extends Data {
+export interface OperationalStatusProps extends Data {
   title: string;
   data?: Data;
   displayOKOnly: boolean;
   displayDisruptedOnly: boolean;
 }
 
-export const OperationalStatus: FunctionComponent<OperationalStatusData> = ({
+export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
   title,
   data,
   displayOKOnly = false,
