@@ -14,30 +14,28 @@ export const Simple = Template.bind({});
 Simple.args = {
   title: "Past Incidents",
   subTitle: "Showing all past incidents in the last 6 months",
-  data: {
-    last_updated: "2024-07-02T15:53:42+1000",
-    incidents: [
-      {
-        datetime_reported: "2024-04-16T10:53:42+1000",
-        reason: "PB Server - service disrupted",
-      },
-      {
-        datetime_reported: "2024-02-12T09:43:42+1000",
-        reason: "HPC-FS Scheduled maintenance",
-      },
-      {
-        datetime_reported: "2023-12-13T06:33:42+1000",
-        reason: "PB Server - service disrupted",
-      },
-      {
-        datetime_reported: "2023-10-19T07:33:32+1000",
-        reason: "HPC-FS Scheduled maintenance",
-      },
-    ],
-  },
+  lastUpdated: "2024-07-02T15:53:42+1000",
+  incidents: [
+    {
+      reported: "2024-04-16T10:53:42+1000",
+      reason: "PB Server - service disrupted",
+    },
+    {
+      reported: "2024-02-12T09:43:42+1000",
+      reason: "HPC-FS Scheduled maintenance",
+    },
+    {
+      reported: "2023-12-13T06:33:42+1000",
+      reason: "PB Server - service disrupted",
+    },
+    {
+      reported: "2023-10-19T07:33:32+1000",
+      reason: "HPC-FS Scheduled maintenance",
+    },
+  ],
 };
 
 export const NoDataAvailable = Template.bind({});
 NoDataAvailable.args = {
-  data: undefined,
+  incidents: undefined,
 };
