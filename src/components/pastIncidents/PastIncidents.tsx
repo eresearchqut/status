@@ -40,25 +40,25 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
         {lastUpdated !== "" && (
           <Text fontSize="1x1">Last Updated: {lastUpdated}</Text>
         )}
+        <TableContainer>
+          <Table>
+            <Tbody>
+              {incidents.map((incident: any, index: number) => (
+                <Tr key={index}>
+                  <Td px={0}>
+                    <Text fontSize="2xl" as="b">
+                      {incident?.reported}
+                    </Text>
+                    <Text fontSize="1xl" my={2}>
+                      {incident?.reason}
+                    </Text>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
       </Flex>
-      <TableContainer>
-        <Table>
-          <Tbody>
-            {incidents.map((incident: any, index: number) => (
-              <Tr key={index}>
-                <Td>
-                  <Text fontSize="2xl" as="b">
-                    {incident?.reported}
-                  </Text>
-                  <Text fontSize="1xl" my={2}>
-                    {incident?.reason}
-                  </Text>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
     </Box>
   );
 };
