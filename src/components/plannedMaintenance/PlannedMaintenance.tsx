@@ -64,37 +64,37 @@ export const PlannedMaintenance: FunctionComponent<PlannedMaintenanceProps> = ({
             The following systems have maintenance planned in the next two weeks
           </AlertTitle>
         </Alert>
-      </Flex>
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Td>
-                <Text as="b">SERVICE</Text>
-              </Td>
-              <Td>
-                <Text as="b">PLANNED FROM</Text>
-              </Td>
-              <Td>
-                <Text as="b">PLANNED TO</Text>
-              </Td>
-              <Td>
-                <Text as="b">IMPACT</Text>
-              </Td>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {plannedMaintenances.map((maintenance: any, index: number) => (
-              <Tr key={index}>
-                <Td>{maintenance?.service}</Td>
-                <Td>{convertDate(maintenance?.from)}</Td>
-                <Td>{convertDate(maintenance?.to)}</Td>
-                <Td>{maintenance?.impact}</Td>
+        <TableContainer>
+          <Table>
+            <Thead>
+              <Tr>
+                <Td>
+                  <Text as="b">SERVICE</Text>
+                </Td>
+                <Td>
+                  <Text as="b">PLANNED FROM</Text>
+                </Td>
+                <Td>
+                  <Text as="b">PLANNED TO</Text>
+                </Td>
+                <Td>
+                  <Text as="b">IMPACT</Text>
+                </Td>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {plannedMaintenances.map((maintenance: any, index: number) => (
+                <Tr key={index}>
+                  <Td>{maintenance?.service}</Td>
+                  <Td>{convertDate(maintenance?.from)}</Td>
+                  <Td>{convertDate(maintenance?.to)}</Td>
+                  <Td>{maintenance?.impact}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Flex>
     </Box>
   );
 };
