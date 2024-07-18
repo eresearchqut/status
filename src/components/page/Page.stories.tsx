@@ -1,6 +1,12 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { Page } from "./Page";
 import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import {
+  OperationalStatus,
+  ServiceStatus,
+} from "../OperationalStatus/OperationalStatus";
+import PastIncidents from "../pastIncidents/PastIncidents";
+import PlannedMaintenance from "../plannedMaintenance/PlannedMaintenance";
 
 export default {
   title: "Component/Page",
@@ -11,6 +17,58 @@ export default {
 } as Meta<typeof Page>;
 
 const Template: StoryFn<typeof Page> = (args) => <Page {...args} />;
+
+const data = {
+  services: [
+    {
+      name: "Jupyter Hub",
+      status: ServiceStatus.FAILURE,
+      error: "404",
+    },
+    {
+      name: "Lyra login node",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "XNAT",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "eResearch Portal",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "rVDI",
+      status: ServiceStatus.OK,
+    },
+  ],
+  plannedMaintenances: [
+    {
+      service: "HPC-FS",
+      from: "2024-07-26T09:53:42+1000",
+      to: "2024-07-26T12:53:42+1000",
+      impact: "Service will be unavailable",
+    },
+  ],
+  incidents: [
+    {
+      reported: "2024-04-16T10:53:42+1000",
+      reason: "PB Server - service disrupted",
+    },
+    {
+      reported: "2024-02-12T09:43:42+1000",
+      reason: "HPC-FS Scheduled maintenance",
+    },
+    {
+      reported: "2023-12-13T06:33:42+1000",
+      reason: "PB Server - service disrupted",
+    },
+    {
+      reported: "2023-10-19T07:33:32+1000",
+      reason: "HPC-FS Scheduled maintenance",
+    },
+  ],
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -39,15 +97,95 @@ Default.args = {
   },
 };
 
-export const WithLoading = Template.bind({});
-WithLoading.args = {
+export const AllSystemsOperational = Template.bind({});
+AllSystemsOperational.args = {
   ...Default.args,
-  loadingProgress: {
-    loading: true,
-  },
+  pageTitle: "eResearch service status",
+  children: (
+    <Box>
+      <PlannedMaintenance
+        lastUpdated=""
+        plannedMaintenances={data.plannedMaintenances}
+      />
+
+      <OperationalStatus
+        title="Service disruptions"
+        lastUpdated=""
+        services={data.services}
+        filter={ServiceStatus.FAILURE}
+      />
+
+      <OperationalStatus
+        title="Operational status"
+        lastUpdated=""
+        services={data.services}
+        filter={ServiceStatus.OK}
+      />
+
+      <PastIncidents
+        title="Past Incidents"
+        subTitle="Showing all past incidents in the last 6 months"
+        lastUpdated=""
+        incidents={data.incidents}
+      />
+    </Box>
+  ),
 };
 
-export const BreadcrumbPosition = Template.bind({});
-BreadcrumbPosition.args = {
+export const ServiceDisruptions = Template.bind({});
+ServiceDisruptions.args = {
   ...Default.args,
+  pageTitle: "eResearch service status",
+  children: (
+    <Box>
+      <OperationalStatus
+        title="Service disruptions"
+        lastUpdated=""
+        services={data.services}
+        filter={ServiceStatus.FAILURE}
+      />
+
+      <OperationalStatus
+        title="Operational status"
+        lastUpdated=""
+        services={data.services}
+        filter={ServiceStatus.OK}
+      />
+
+      <PastIncidents
+        title="Past Incidents"
+        subTitle="Showing all past incidents in the last 6 months"
+        lastUpdated=""
+        incidents={data.incidents}
+      />
+    </Box>
+  ),
+};
+
+export const PlannedMaintenances = Template.bind({});
+PlannedMaintenances.args = {
+  ...Default.args,
+  pageTitle: "eResearch service status",
+  children: (
+    <Box>
+      <PlannedMaintenance
+        lastUpdated=""
+        plannedMaintenances={data.plannedMaintenances}
+      />
+
+      <OperationalStatus
+        title="Operational status"
+        lastUpdated=""
+        services={data.services}
+        filter={ServiceStatus.OK}
+      />
+
+      <PastIncidents
+        title="Past Incidents"
+        subTitle="Showing all past incidents in the last 6 months"
+        lastUpdated=""
+        incidents={data.incidents}
+      />
+    </Box>
+  ),
 };
