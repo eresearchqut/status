@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import {
   Text,
   Box,
+  Flex,
   Table,
   Thead,
   Tbody,
@@ -52,50 +53,54 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
 
   return (
     <Box>
-      <Text as="b" fontSize="3xl">
-        {title}
-      </Text>
-      {hasDisruptedService && (
-        <Alert status="error" variant="solid">
-          <AlertIcon />
-          <AlertTitle>
-            The following systems have service disruptions
-          </AlertTitle>
-        </Alert>
-      )}
-      {filteredData && filteredData.length > 0 ? (
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>SERVICE</Th>
-                {hasDisruptedService && <Th>DETECTED</Th>}
-                <Th isNumeric>STATUS</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {filteredData.map((service: any) => (
-                <Tr key={service?.name}>
-                  <Td>{service?.name}</Td>
-                  {hasDisruptedService && <Td>{service?.detected}</Td>}
-                  <Td isNumeric>
-                    <Tag
-                      variant="subtle"
-                      colorScheme={service?.status === "OK" ? "green" : "red"}
-                    >
-                      <TagLabel>
-                        {service?.status === "OK" ? "Operational" : "Disrupted"}
-                      </TagLabel>
-                    </Tag>
-                  </Td>
+      <Flex direction="column" px={6} py={4}>
+        <Text as="b" fontSize="3xl">
+          {title}
+        </Text>
+        {hasDisruptedService && (
+          <Alert status="error" variant="solid">
+            <AlertIcon />
+            <AlertTitle>
+              The following systems have service disruptions
+            </AlertTitle>
+          </Alert>
+        )}
+        {filteredData && filteredData.length > 0 ? (
+          <TableContainer>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>SERVICE</Th>
+                  {hasDisruptedService && <Th>DETECTED</Th>}
+                  <Th isNumeric>STATUS</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <Text>No Data available.</Text>
-      )}
+              </Thead>
+              <Tbody>
+                {filteredData.map((service: any) => (
+                  <Tr key={service?.name}>
+                    <Td>{service?.name}</Td>
+                    {hasDisruptedService && <Td>{service?.detected}</Td>}
+                    <Td isNumeric>
+                      <Tag
+                        variant="subtle"
+                        colorScheme={service?.status === "OK" ? "green" : "red"}
+                      >
+                        <TagLabel>
+                          {service?.status === "OK"
+                            ? "Operational"
+                            : "Disrupted"}
+                        </TagLabel>
+                      </Tag>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Text>No Data available.</Text>
+        )}
+      </Flex>
     </Box>
   );
 };
