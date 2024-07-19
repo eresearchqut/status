@@ -49,6 +49,10 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
     (service: any) => service?.status !== ServiceStatus.OK
   );
 
+  const noDisruptedService = !services?.some(
+    (service: any) => service?.status === ServiceStatus.FAILURE
+  );
+
   if (filteredData.length === 0) return null;
 
   return (
@@ -63,6 +67,12 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
             <AlertTitle>
               The following systems have service disruptions
             </AlertTitle>
+          </Alert>
+        )}
+        {noDisruptedService && (
+          <Alert status="success" variant="solid">
+            <AlertIcon />
+            <AlertTitle>All systems are operational</AlertTitle>
           </Alert>
         )}
         {filteredData && filteredData.length > 0 ? (
