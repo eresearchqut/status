@@ -39,6 +39,30 @@ Default.args = {
   ],
 };
 
+export const AllOperational = Template.bind({});
+AllOperational.args = {
+  ...Default.args,
+  services: [
+    {
+      name: "Lyra login node",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "XNAT",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "eResearch Portal",
+      status: ServiceStatus.OK,
+    },
+    {
+      name: "rVDI",
+      status: ServiceStatus.OK,
+    },
+  ],
+  filter: ServiceStatus.OK,
+};
+
 export const Disruptions = Template.bind({});
 Disruptions.args = {
   ...Default.args,
