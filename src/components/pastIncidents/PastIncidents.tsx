@@ -1,14 +1,5 @@
-import React, { FunctionComponent } from "react";
-import {
-  Text,
-  Flex,
-  Box,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-} from "@chakra-ui/react";
+import React, {FunctionComponent} from "react";
+import {Heading, Stack, StackDivider, Text,} from "@chakra-ui/react";
 
 interface Incident {
   reported: string;
@@ -23,43 +14,37 @@ export interface PastIncidentsProps {
 }
 
 export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
-  title,
-  subTitle,
-  lastUpdated = "",
-  incidents = [],
-}) => {
+                                                                       title,
+                                                                       subTitle,
+                                                                       lastUpdated = "",
+                                                                       incidents = [],
+                                                                     }) => {
   if (incidents.length === 0) return null;
 
   return (
-    <Box>
-      <Flex direction="column" px={6} py={4}>
-        <Text as="b" fontSize="3xl">
-          {title}
-        </Text>
-        <Text fontSize="1xl">{subTitle}</Text>
-        {lastUpdated !== "" && (
-          <Text fontSize="1x1">Last Updated: {lastUpdated}</Text>
-        )}
-        <TableContainer>
-          <Table>
-            <Tbody>
-              {incidents.map((incident: any, index: number) => (
-                <Tr key={index}>
-                  <Td px={0}>
-                    <Text fontSize="2xl" as="b">
-                      {incident?.reported}
-                    </Text>
-                    <Text fontSize="1xl" my={2}>
-                      {incident?.reason}
-                    </Text>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Flex>
-    </Box>
+
+    <Stack spacing={2}>
+      <Heading as={"h3"}>
+        {title}
+      </Heading>
+      <Text>{subTitle}</Text>
+      <Stack spacing={2} divider={<StackDivider borderColor='gray.200'/>}>
+        {incidents.map((incident: any, index: number) => (
+          <Stack spacing={2}>
+            <Heading as={"h4"} size={"lg"}>
+              {new Date(incident.reported).toLocaleDateString('en-AU', {
+                year: 'numeric',
+                month: 'long',
+                day: "numeric"
+              })}
+            </Heading>
+            <Text>
+              {incident.reason}
+            </Text>
+          </Stack>
+        ))}
+      </Stack>
+    </Stack>
   );
 };
 

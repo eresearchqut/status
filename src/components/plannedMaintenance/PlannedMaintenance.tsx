@@ -1,20 +1,20 @@
-import React, { FunctionComponent } from "react";
+import React, {FunctionComponent} from "react";
 import {
-  Text,
-  Flex,
-  Box,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  Thead,
+  Alert,
   AlertIcon,
   AlertTitle,
-  Alert,
+  Heading,
+  Stack,
+  Table,
+  TableCaption,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 
-interface PlannedMaintenance {
+export interface PlannedMaintenanceItem {
   service: string;
   from: string;
   to: string;
@@ -23,79 +23,60 @@ interface PlannedMaintenance {
 
 export interface PlannedMaintenanceProps {
   lastUpdated: string;
-  plannedMaintenances: PlannedMaintenance[];
+  plannedMaintenances: PlannedMaintenanceItem[];
 }
 
 export const PlannedMaintenance: FunctionComponent<PlannedMaintenanceProps> = ({
-  lastUpdated = "",
-  plannedMaintenances = [],
-}) => {
+                                                                                 lastUpdated = "",
+                                                                                 plannedMaintenances = [],
+                                                                               }) => {
   if (plannedMaintenances.length === 0) return null;
 
-  const convertDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-
-    let hours = date.getHours();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    const formattedHours = String(hours).padStart(2, "0");
-
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-    const year = date.getFullYear();
-
-    return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
-  };
+  const convertDate = (isoDate: string) => `${new Date(isoDate).toLocaleTimeString('en-AU')} ${new Date(isoDate).toLocaleDateString('en-AU')}`
 
   return (
-    <Box>
-      <Flex direction="column" px={6} py={4}>
-        <Text as="b" fontSize="3xl">
-          Planned maintenance
-        </Text>
+    <Stack spacing={2}>
+      <Heading as={"h3"}>
+        Planned maintenance
+      </Heading>
+      <Alert status="info" variant="solid">
+        <AlertIcon/>
+        <AlertTitle>
+          The following systems have maintenance planned in the next two weeks
+        </AlertTitle>
+      </Alert>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th>
+              Service
+            </Th>
+            <Th>
+              Planned From
+            </Th>
+            <Th>
+              Planned To
+            </Th>
+            <Th>
+              Impact
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {plannedMaintenances.map((maintenance: any, index: number) => (
+            <Tr key={index}>
+              <Td>{maintenance?.service}</Td>
+              <Td>{convertDate(maintenance?.from)}</Td>
+              <Td>{convertDate(maintenance?.to)}</Td>
+              <Td>{maintenance?.impact}</Td>
+            </Tr>
+          ))}
+        </Tbody>
         {lastUpdated !== "" && (
-          <Text fontSize="1x1">Last Updated: {convertDate(lastUpdated)}</Text>
+          <TableCaption>Last Updated: {convertDate(lastUpdated)}</TableCaption>
         )}
-        <Alert status="info" variant="solid">
-          <AlertIcon />
-          <AlertTitle>
-            The following systems have maintenance planned in the next two weeks
-          </AlertTitle>
-        </Alert>
-        <TableContainer>
-          <Table>
-            <Thead>
-              <Tr>
-                <Td>
-                  <Text as="b">SERVICE</Text>
-                </Td>
-                <Td>
-                  <Text as="b">PLANNED FROM</Text>
-                </Td>
-                <Td>
-                  <Text as="b">PLANNED TO</Text>
-                </Td>
-                <Td>
-                  <Text as="b">IMPACT</Text>
-                </Td>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {plannedMaintenances.map((maintenance: any, index: number) => (
-                <Tr key={index}>
-                  <Td>{maintenance?.service}</Td>
-                  <Td>{convertDate(maintenance?.from)}</Td>
-                  <Td>{convertDate(maintenance?.to)}</Td>
-                  <Td>{maintenance?.impact}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Flex>
-    </Box>
+      </Table>
+    </Stack>
   );
 };
 
