@@ -11,7 +11,7 @@ export const Logo: FunctionComponent<LogoProps> = ({ src, alt }) => (
     src={src as string}
     alt={alt}
     objectFit="cover"
-    maxH={["40px", "50px"]}
+    maxH={["80px", "100px"]}
   />
 );
 export default Logo;

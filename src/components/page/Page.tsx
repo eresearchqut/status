@@ -13,17 +13,13 @@ import {
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 import { Header, HeaderProps } from "../header";
-import { Footer, FooterProps } from "../footer";
-import { LoadingProgress, LoadingProgressProps } from "../loadingProgress";
 
 export interface PageProps {
   header: HeaderProps;
   pageTitle?: string;
   pageTitleSize?: HeadingProps["size"];
   pageTitleHeading?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  footer: FooterProps;
   variant?: "expandableMain";
-  loadingProgress?: LoadingProgressProps;
   isLanding?: boolean;
 }
 
@@ -31,9 +27,7 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
   props
 ) => {
   const {
-    loadingProgress,
     header,
-    footer,
     pageTitle,
     pageTitleSize = "xl",
     pageTitleHeading = "h1",
@@ -55,14 +49,6 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
       minH={"100vh"}
       bgColor={pageColor}
     >
-      <GridItem area={"header"}>
-        <Box __css={styles.header}>
-          <chakra.header __css={styles.headerContainer}>
-            <Header {...header} />
-          </chakra.header>
-        </Box>
-      </GridItem>
-
       <GridItem area={"main"}>
         <Box __css={styles.main}>
           <chakra.main __css={styles.mainContainer}>
@@ -73,27 +59,19 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
               borderWidth={1}
               borderColor={cardBorderColor}
             >
-              <CardHeader pl={6} pr={6} pb={0}>
+              <CardHeader px={12} pt={12} pb={0}>
+                <Header {...header} />
                 {pageTitle && (
                   <Heading as={pageTitleHeading} size={pageTitleSize}>
                     {pageTitle}
                   </Heading>
                 )}
               </CardHeader>
-              <CardBody pl={6} pr={6}>
+              <CardBody px={6} pt={0}>
                 {children}
               </CardBody>
             </Card>
           </chakra.main>
-        </Box>
-      </GridItem>
-
-      <GridItem area={"footer"}>
-        {loadingProgress && <LoadingProgress {...loadingProgress} />}
-        <Box __css={styles.footer}>
-          <chakra.footer __css={styles.footerContainer}>
-            <Footer {...footer} />
-          </chakra.footer>
         </Box>
       </GridItem>
     </Grid>
