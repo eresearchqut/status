@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { OperationalStatus, ServiceStatus } from "./OperationalStatus";
+import { OperationalStatus, Service, ServiceStatus } from "./OperationalStatus";
 
 export default {
   title: "Component/OperationalStatus",
@@ -42,27 +42,9 @@ Default.args = {
 export const AllOperational = Template.bind({});
 AllOperational.args = {
   ...Default.args,
-  services: [
-    {
-      name: "Lyra login node",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "XNAT",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "eResearch Portal",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "rVDI",
-      status: ServiceStatus.OK,
-    },
-  ],
+  services: [...(Default.args.services?.slice(1) as Array<Service>)],
   filter: ServiceStatus.OK,
 };
-
 export const Disruptions = Template.bind({});
 Disruptions.args = {
   ...Default.args,
@@ -80,11 +62,9 @@ export const OperationalWithDisruptedOnly = Template.bind({});
 OperationalWithDisruptedOnly.args = {
   lastUpdated: "2024-07-02T15:53:42+1000",
   services: [
-    {
-      name: "Jupyter Hub",
-      status: ServiceStatus.FAILURE,
-      error: "404",
-    },
+    ...(Default.args.services as Array<Service>).filter(
+      (service) => service.status === ServiceStatus.FAILURE
+    ),
   ],
   title: "Operational status",
   filter: ServiceStatus.OK,
@@ -94,22 +74,9 @@ export const DisruptionsWithOKOnly = Template.bind({});
 DisruptionsWithOKOnly.args = {
   lastUpdated: "2024-07-02T15:53:42+1000",
   services: [
-    {
-      name: "Lyra login node",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "XNAT",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "eResearch Portal",
-      status: ServiceStatus.OK,
-    },
-    {
-      name: "rVDI",
-      status: ServiceStatus.OK,
-    },
+    ...(Default.args.services as Array<Service>).filter(
+      (service) => service.status === ServiceStatus.OK
+    ),
   ],
   title: "Service disruptions",
   filter: ServiceStatus.FAILURE,

@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { Page } from "./Page";
-import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { Stack, Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import {
   OperationalStatus,
   ServiceStatus,
@@ -108,7 +108,7 @@ AllSystemsOperational.args = {
   },
   pageTitle: "",
   children: (
-    <Box>
+    <Stack spacing={6} px={6}>
       <PlannedMaintenance
         lastUpdated=""
         plannedMaintenances={data.plannedMaintenances}
@@ -134,7 +134,7 @@ AllSystemsOperational.args = {
         lastUpdated=""
         incidents={data.incidents}
       />
-    </Box>
+    </Stack>
   ),
 };
 
@@ -142,7 +142,7 @@ export const ServiceDisruptions = Template.bind({});
 ServiceDisruptions.args = {
   ...AllSystemsOperational.args,
   children: (
-    <Box>
+    <Stack spacing={6} px={6}>
       <OperationalStatus
         title="Service disruptions"
         lastUpdated=""
@@ -163,7 +163,7 @@ ServiceDisruptions.args = {
         lastUpdated=""
         incidents={data.incidents}
       />
-    </Box>
+    </Stack>
   ),
 };
 
@@ -171,7 +171,7 @@ export const PlannedMaintenances = Template.bind({});
 PlannedMaintenances.args = {
   ...AllSystemsOperational.args,
   children: (
-    <Box>
+    <Stack spacing={6} px={6}>
       <PlannedMaintenance
         lastUpdated=""
         plannedMaintenances={data.plannedMaintenances}
@@ -190,6 +190,6 @@ PlannedMaintenances.args = {
         lastUpdated=""
         incidents={data.incidents}
       />
-    </Box>
+    </Stack>
   ),
 };
