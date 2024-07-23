@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import {
+  Box,
   Heading,
   HeadingProps,
   HStack,
@@ -11,16 +12,25 @@ import { Logo, LogoProps } from "../logo";
 export interface BrandingProps extends HeadingProps {
   logo?: LogoProps;
   heading: string;
+  hasLogoHeadingDivider?: boolean;
 }
 
 export const Branding: FunctionComponent<BrandingProps> = (props) => {
-  const { logo, heading, size = ["sm", "md"], ...headingProps } = props;
+  const {
+    logo,
+    heading,
+    hasLogoHeadingDivider = true,
+    size = ["sm", "md"],
+    ...headingProps
+  } = props;
 
   return (
     <Link href={"/"} textDecoration="none" aria-label={"Home Page"}>
       <HStack
         spacing={[2, 3, 4]}
-        divider={<StackDivider bg={"brand.50"} />}
+        divider={
+          hasLogoHeadingDivider ? <StackDivider bg={"brand.50"} /> : <Box></Box>
+        }
         align={"center"}
       >
         {logo && <Logo {...logo} />}
