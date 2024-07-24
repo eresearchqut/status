@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 timeout=10
 tmp="$(mktemp -d)"
@@ -88,5 +88,16 @@ last_updated=$(date +"%Y-%m-%dT%H:%M:%S%z")
 printf -v joined '%s,' "${services[@]}"
 echo "{\"last_updated\":\"${last_updated}\",\"services\":[${joined%,}]}"
 
+# Create the final JSON object
+json_output="{\"last_updated\":\"${last_updated}\",\"services\":[${joined%,}]}"
 
+# Write the JSON object to file named status
+output_dir="./public/"
+output_file="${output_dir}status.json"
 
+# Create the output directory if it doesn't exist
+mkdir -p "${output_dir}"
+
+echo "${json_output}" | jq . > "${output_file}"
+
+echo "JSON content written to ${output_file}"
