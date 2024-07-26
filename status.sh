@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 timeout=10
 tmp="$(mktemp -d)"
