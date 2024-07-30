@@ -40,7 +40,7 @@ WORKDIR /app
 
 # Install necessary packages as root
 USER root
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash curl jq
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -60,14 +60,19 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy the all necessary scripts
+# Copy all necessary files
 COPY checks.csv /app/checks.csv
+COPY incidents.csv /app/incidents.csv
+COPY past_incidents.csv /app/past_incidents.csv
+
+# Copy the all necessary scripts
 COPY status.sh /app/status.sh
-COPY loop_status.sh /app/loop_status.sh
+COPY incidents.sh /app/incidents.sh
+COPY loop.sh /app/loop.sh
 
 # Make the scripts executable
 RUN chmod -R 777 /app/public
-RUN chmod +x loop_status.sh /app/loop_status.sh /app/status.sh
+RUN chmod +x /app/loop.sh /app/status.sh /app/incidents.sh
 
 USER nextjs
 
@@ -77,4 +82,4 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js & bash /app/loop_status.sh
+CMD HOSTNAME="0.0.0.0" node server.js & bash -c "/app/incidents.sh > /app/public/incidents.json 2>&1" & bash /app/loop.sh
