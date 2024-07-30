@@ -70,11 +70,11 @@ COPY planned_maintenance.csv /app/planned_maintenance.csv
 COPY status.sh /app/status.sh
 COPY incidents.sh /app/incidents.sh
 COPY planned_maintenance.sh /app/planned_maintenance.sh
-COPY loop.sh /app/loop.sh
+COPY startup.sh /app/startup.sh
 
 # Make the scripts executable
 RUN chmod -R 777 /app/public
-RUN chmod +x /app/loop.sh /app/status.sh /app/incidents.sh /app/planned_maintenance.sh
+RUN chmod +x /app/startup.sh /app/status.sh /app/incidents.sh /app/planned_maintenance.sh
 
 USER nextjs
 
@@ -84,4 +84,4 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js & bash -c "/app/incidents.sh > /app/public/incidents.json 2>&1" & bash -c "/app/planned_maintenance.sh > /app/public/planned_maintenance.json 2>&1" & bash /app/loop.sh
+CMD HOSTNAME="0.0.0.0" node server.js & bash /app/startup.sh
