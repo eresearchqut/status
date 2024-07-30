@@ -82,4 +82,4 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js & bash /app/loop.sh
+CMD HOSTNAME="0.0.0.0" node server.js & bash -c "/app/incidents.sh > /app/public/incidents.json 2>&1" & bash /app/loop.sh
