@@ -46,3 +46,8 @@ Data for past incident is from [past_incidents.csv](past_incidents.csv). When yo
 To update [past_incidents.csv](past_incidents.csv), if the file is empty and you want to add a history, add a line with the following format (values separated with a comma): `2024-07-20, HPC-FS, scheduled maintenance`.
 
 After editing, commit your changes, the system will re-build itself and you shall see the updates.
+
+## Updating Planned Maintenance Events
+When adding planned maintenance events, edit [planned_maintenance.csv](planned_maintenance.csv) and add a new row with the following format (values separated with a comma): `HPC-FS, 2024-01-31T09:00:00+1000, 2024-01-31T12:00:00+1000, Service will be unavailable`. 
+
+After editing, commit your changes, the system will re-build itself and you shall see the updates.
