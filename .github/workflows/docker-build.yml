@@ -1,11 +1,9 @@
 name: Docker Build
 
 on:
-  pull_request:
-    paths:
-      - './incidents.csv'
-      - './past_incidents.csv'
-      - './planned_maintenance.csv'
+  push:
+    branches:
+      - '**'  # Trigger on all branches
 
 jobs:
   build-and-push-image:
