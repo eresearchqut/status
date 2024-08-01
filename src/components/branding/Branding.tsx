@@ -13,6 +13,7 @@ export interface BrandingProps extends HeadingProps {
   logo?: LogoProps;
   heading: string;
   hasLogoHeadingDivider?: boolean;
+  size?: string;
 }
 
 export const Branding: FunctionComponent<BrandingProps> = (props) => {
@@ -20,7 +21,7 @@ export const Branding: FunctionComponent<BrandingProps> = (props) => {
     logo,
     heading,
     hasLogoHeadingDivider = true,
-    size = ["sm", "md"],
+    size = props ? props?.size : ["sm", "md"],
     ...headingProps
   } = props;
 

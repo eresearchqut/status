@@ -4,14 +4,12 @@ import { Image } from "@chakra-ui/react";
 export interface LogoProps {
   src: string;
   alt: string;
+  size?: string;
 }
 
-export const Logo: FunctionComponent<LogoProps> = ({ src, alt }) => (
-  <Image
-    src={src as string}
-    alt={alt}
-    objectFit="cover"
-    maxH={["80px", "100px"]}
-  />
-);
+export const Logo: FunctionComponent<LogoProps> = ({
+  src,
+  alt,
+  size = "80px",
+}) => <Image boxSize={size} src={src as string} alt={alt} objectFit="cover" />;
 export default Logo;
