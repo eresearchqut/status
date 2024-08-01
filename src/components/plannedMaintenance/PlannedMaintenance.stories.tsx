@@ -22,8 +22,8 @@ OnePlannedMaintenances.args = {
   plannedMaintenances: [
     {
       service: "HPC-FS",
-      from: "2024-07-26T09:00:00+1000",
-      to: "2024-07-26T12:00:00+1000",
+      date_time_from: "2024-07-26T09:00:00+1000",
+      date_time_to: "2024-07-26T12:00:00+1000",
       impact: "Service will be unavailable",
     },
   ],
@@ -38,8 +38,8 @@ TwoPlannedMaintenances.args = {
     ...[
       {
         service: "PBS Server",
-        from: "2024-07-27T09:53:42+1000",
-        to: "2024-07-27T12:53:42+1000",
+        date_time_from: "2024-07-27T09:53:42+1000",
+        date_time_to: "2024-07-27T12:53:42+1000",
         impact: "Service will be unavailable",
       },
     ],
