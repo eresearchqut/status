@@ -21,7 +21,7 @@ export const Branding: FunctionComponent<BrandingProps> = (props) => {
     logo,
     heading,
     hasLogoHeadingDivider = true,
-    size = props ? props?.size : ["sm", "md"],
+    size = ["sm", "md"],
     ...headingProps
   } = props;
 

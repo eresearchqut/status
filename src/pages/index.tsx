@@ -9,14 +9,44 @@ import { OperationalStatus, Service } from "../components/OperationalStatus";
 import { PastIncidents } from "../components/pastIncidents";
 import { ServiceStatus } from "../components/OperationalStatus/OperationalStatus";
 
-import statusJsonData from "../../public/status.json";
 import incidentsJsonData from "../../public/incidents.json";
 import plannedMaintenanceJsonData from "../../public/planned_maintenance.json";
+import { useEffect, useState } from "react";
+
+interface StatusData {
+  last_updated: string;
+  services: Service[];
+}
 
 const Home: NextPage = () => {
-  const statusData = statusJsonData;
+  const [statusData, setStatusData] = useState<StatusData | null>(null);
   const incidentsData = incidentsJsonData;
   const plannedMaintenanceData = plannedMaintenanceJsonData;
+
+  useEffect(() => {
+    const fetchStatusData = async () => {
+      try {
+        const response = await fetch("./status.json");
+        if (!response.ok) {
+          console.error("Network response was not ok");
+        }
+        const data = await response.json();
+        setStatusData(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    // Initial fetch
+    fetchStatusData();
+
+    // Poll every 60 seconds
+    const intervalId = setInterval(async () => {
+      await fetchStatusData();
+    }, 60000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
