@@ -26,6 +26,7 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
   props
 ) => {
   const { header, children } = props;
+  console.log(props.header);
   const templateAreas = `"header" "navigation" "main" "footer"`;
   const gridTemplateRows = "auto auto 1fr auto";
   const styles = useMultiStyleConfig("Page", props);
@@ -53,7 +54,7 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
               borderColor={cardBorderColor}
             >
               <CardHeader px={12} pt={12} pb={6}>
-                <Header {...header} />
+                <Header {...header} size={"2xl"} />
               </CardHeader>
 
               <CardBody px={12} pt={0}>

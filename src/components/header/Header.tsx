@@ -4,6 +4,7 @@ import { Branding, BrandingProps } from "../branding";
 
 export interface HeaderProps {
   branding: BrandingProps;
+  size?: string;
 }
 
 export const Header: FunctionComponent<PropsWithChildren<HeaderProps>> = (
@@ -16,7 +17,7 @@ export const Header: FunctionComponent<PropsWithChildren<HeaderProps>> = (
       direction={["column", "row"]}
       justifyContent={["flex-start", "space-between"]}
     >
-      <Branding {...branding} />
+      <Branding {...branding} size={props?.size} />
       {children}
     </Stack>
   );
