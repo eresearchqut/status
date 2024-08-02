@@ -16,8 +16,8 @@ import {
 
 export interface PlannedMaintenanceItem {
   service: string;
-  from: string;
-  to: string;
+  date_time_from: string;
+  date_time_to: string;
   impact: string;
 }
 
@@ -57,8 +57,8 @@ export const PlannedMaintenance: FunctionComponent<PlannedMaintenanceProps> = ({
           {plannedMaintenances.map((maintenance: any, index: number) => (
             <Tr key={index}>
               <Td>{maintenance?.service}</Td>
-              <Td>{convertDate(maintenance?.from)}</Td>
-              <Td>{convertDate(maintenance?.to)}</Td>
+              <Td>{convertDate(maintenance?.date_time_from)}</Td>
+              <Td>{convertDate(maintenance?.date_time_to)}</Td>
               <Td>{maintenance?.impact}</Td>
             </Tr>
           ))}

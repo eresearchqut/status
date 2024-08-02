@@ -13,6 +13,7 @@ export interface BrandingProps extends HeadingProps {
   logo?: LogoProps;
   heading: string;
   hasLogoHeadingDivider?: boolean;
+  size?: string;
 }
 
 export const Branding: FunctionComponent<BrandingProps> = (props) => {

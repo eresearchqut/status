@@ -7,7 +7,6 @@ import {
   chakra,
   Grid,
   GridItem,
-  Heading,
   HeadingProps,
   useColorModeValue,
   useMultiStyleConfig,
@@ -26,13 +25,8 @@ export interface PageProps {
 export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
   props
 ) => {
-  const {
-    header,
-    pageTitle,
-    pageTitleSize = "xl",
-    pageTitleHeading = "h1",
-    children,
-  } = props;
+  const { header, children } = props;
+  console.log(props.header);
   const templateAreas = `"header" "navigation" "main" "footer"`;
   const gridTemplateRows = "auto auto 1fr auto";
   const styles = useMultiStyleConfig("Page", props);
@@ -59,15 +53,11 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
               borderWidth={1}
               borderColor={cardBorderColor}
             >
-              <CardHeader px={12} pt={12} pb={0}>
-                <Header {...header} />
-                {pageTitle && (
-                  <Heading as={pageTitleHeading} size={pageTitleSize}>
-                    {pageTitle}
-                  </Heading>
-                )}
+              <CardHeader px={12} pt={12} pb={6}>
+                <Header {...header} size={"2xl"} />
               </CardHeader>
-              <CardBody px={6} pt={0}>
+
+              <CardBody px={12} pt={0}>
                 {children}
               </CardBody>
             </Card>

@@ -31,17 +31,17 @@ convert_csv_to_json() {
   local json_array_name=$2
   local json_objects=""
 
-  while IFS=',' read -r date name reason; do
+  while IFS=',' read -r date service reason; do
     # Trim spaces
     date=$(trim_spaces "$date")
-    name=$(trim_spaces "$name")
+    service=$(trim_spaces "$service")
     reason=$(trim_spaces "$reason")
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
       "date": "$date",
-      "name": "$name",
+      "service": "$service",
       "reason": "$reason"
     }
 EOF
@@ -62,16 +62,16 @@ EOF
 load_current_incidents() {
   local json_objects=""
 
-  while IFS=',' read -r name date_time reason; do
+  while IFS=',' read -r service date_time reason; do
     # Check for no ongoing incidents
-    if [[ "$name" == "No ongoing incidents." ]]; then
+    if [[ "$service" == "No ongoing incidents." ]]; then
       break
     fi
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
-      "name": "$name",
+      "service": "$service",
       "date_time": "$date_time",
       "reason": "$reason"
     }

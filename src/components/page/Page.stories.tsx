@@ -45,27 +45,31 @@ const data = {
   plannedMaintenances: [
     {
       service: "HPC-FS",
-      from: "2024-07-26T09:53:42+1000",
-      to: "2024-07-26T12:53:42+1000",
+      date_time_from: "2024-07-26T09:53:42+1000",
+      date_time_to: "2024-07-26T12:53:42+1000",
       impact: "Service will be unavailable",
     },
   ],
-  incidents: [
+  past_incidents: [
     {
-      reported: "2024-04-16T10:53:42+1000",
-      reason: "PB Server - service disrupted",
+      date: "2024-04-16T10:53:42+1000",
+      service: "PB Server",
+      reason: "service disrupted",
     },
     {
-      reported: "2024-02-12T09:43:42+1000",
-      reason: "HPC-FS Scheduled maintenance",
+      date: "2024-02-12T09:43:42+1000",
+      service: "HPC-FS",
+      reason: "Scheduled maintenance",
     },
     {
-      reported: "2023-12-13T06:33:42+1000",
-      reason: "PB Server - service disrupted",
+      date: "2023-12-13T06:33:42+1000",
+      service: "PB Server",
+      reason: "service disrupted",
     },
     {
-      reported: "2023-10-19T07:33:32+1000",
-      reason: "HPC-FS Scheduled maintenance",
+      date: "2023-10-19T07:33:32+1000",
+      service: "HPC-FS",
+      reason: "Scheduled maintenance",
     },
   ],
 };
@@ -132,7 +136,7 @@ AllSystemsOperational.args = {
         title="Past Incidents"
         subTitle="Showing all past incidents in the last 6 months"
         lastUpdated=""
-        incidents={data.incidents}
+        incidents={data.past_incidents}
       />
     </Stack>
   ),
@@ -161,7 +165,7 @@ ServiceDisruptions.args = {
         title="Past Incidents"
         subTitle="Showing all past incidents in the last 6 months"
         lastUpdated=""
-        incidents={data.incidents}
+        incidents={data.past_incidents}
       />
     </Stack>
   ),
@@ -188,7 +192,7 @@ PlannedMaintenances.args = {
         title="Past Incidents"
         subTitle="Showing all past incidents in the last 6 months"
         lastUpdated=""
-        incidents={data.incidents}
+        incidents={data.past_incidents}
       />
     </Stack>
   ),
