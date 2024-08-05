@@ -30,6 +30,9 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
     });
   };
 
+  const convertDateTimeStr = (isoDate: string) =>
+    `${new Date(isoDate).toLocaleTimeString("en-AU")} ${new Date(isoDate).toLocaleDateString("en-AU")}`;
+
   return (
     <Stack spacing={2}>
       <Heading as="h3">{title}</Heading>
@@ -46,7 +49,9 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
           </Stack>
         ))}
       </Stack>
-      {lastUpdated !== "" && <Text>Last Updated: {lastUpdated}</Text>}
+      {lastUpdated !== "" && (
+        <Text>Last Updated: {convertDateTimeStr(lastUpdated)}</Text>
+      )}
     </Stack>
   );
 };
