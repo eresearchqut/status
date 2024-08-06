@@ -44,6 +44,7 @@ To update [incidents.csv](incidents.csv), In case any incident happens, remove t
 | 1 | Service Name | Name of the service disrupted          | String             | PBS Server               |
 | 2 | Reported     | The date and time outage were reported | ISO 8601 Date Time | 2024-07-02T15:53:42+1000 |
 | 3 | Reason       | The cause/reason for the outage        | String             | Disrupted                |
+
 **Important Notes:** Please remove current incident records once that service(s) have recovered from the outage to keep the status updated.
 
 After editing, commit your changes, the system will re-build itself and you shall see the updates.
@@ -73,6 +74,7 @@ When adding planned maintenance events, edit [planned_maintenance.csv](planned_m
 | 2 | Date & Time From | The date and time when this maintenance starts     | ISO 8601 Date Time | 2024-01-31T09:00:00+1000    |
 | 3 | Date & Time To   | The date and time when this maintenance finishes   | ISO 8601 Date Time | 2024-01-31T12:00:00+1000    |
 | 4 | Impact           | The impact(s) will be caused from this maintenance | String             | Service will be unavailable |
+
 **Important Notes:**
 - The finishing time of the maintenance must be after the starting time. Please perform a sanity check when editing.
 - Please remove events that are finished or expired to keep the status updated.
