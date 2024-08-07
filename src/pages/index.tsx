@@ -5,9 +5,9 @@ import site from "../../public/site.json";
 import Page from "../components/page/Page";
 
 import { PlannedMaintenance } from "../components/plannedMaintenance";
-import { OperationalStatus, Service } from "../components/OperationalStatus";
+import { OperationalStatus, Service } from "../components/operationalStatus";
 import { PastIncidents } from "../components/pastIncidents";
-import { ServiceStatus } from "../components/OperationalStatus/OperationalStatus";
+import { ServiceStatus } from "../components/operationalStatus/OperationalStatus";
 
 import incidentsJsonData from "../../public/incidents.json";
 import plannedMaintenanceJsonData from "../../public/planned_maintenance.json";

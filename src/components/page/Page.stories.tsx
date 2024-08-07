@@ -4,7 +4,7 @@ import { Stack, Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import {
   OperationalStatus,
   ServiceStatus,
-} from "../OperationalStatus/OperationalStatus";
+} from "../operationalStatus/OperationalStatus";
 import PastIncidents from "../pastIncidents/PastIncidents";
 import PlannedMaintenance from "../plannedMaintenance/PlannedMaintenance";
 
