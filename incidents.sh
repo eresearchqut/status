@@ -64,7 +64,7 @@ load_current_incidents() {
 
   while IFS=',' read -r service date_time reason; do
     # Check for no ongoing incidents
-    if [[ "$service" == "No ongoing incidents." ]]; then
+    if [[ "$service" == "" ]]; then
       break
     fi
 
