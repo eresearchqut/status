@@ -1,26 +1,10 @@
 {
-  "last_updated": "2024-07-02T15:53:42+1000",
+  "last_updated": "2024-08-07T15:53:22+1000",
   "services": [
-    {
-      "name": "Jupyter Hub",
-      "status": "FAILURE",
-      "error": "404"
-    },
-    {
-      "name": "Lyra login node",
-      "status": "OK"
-    },
-    {
-      "name": "XNAT",
-      "status": "OK"
-    },
-    {
-      "name": "eResearch Portal",
-      "status": "OK"
-    },
-    {
-      "name": "rVDI",
-      "status": "OK"
-    }
+    { "name": "eResearch Portal", "status": "OK" },
+    { "name": "Jupyter Hub", "status": "OK" },
+    { "name": "Lyra login node", "status": "OK" },
+    { "name": "rVDI", "status": "OK" },
+    { "name": "XNAT", "status": "OK" }
   ]
 }

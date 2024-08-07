@@ -1,26 +1,5 @@
 {
-  "last_updated": "2024-08-01T10:48:57+1000",
+  "last_updated": "2024-08-07T15:53:19+1000",
   "current_incidents": [],
-  "past_incidents": [
-    {
-      "date": "2023-10-19",
-      "service": "HPC-FS",
-      "reason": "scheduled maintenance"
-    },
-    {
-      "date": "2023-12-13",
-      "service": "PB Server",
-      "reason": "service disrupted"
-    },
-    {
-      "date": "2024-02-12",
-      "service": "HPC-FS",
-      "reason": "scheduled maintenance"
-    },
-    {
-      "date": "2024-04-16",
-      "service": "PB Server",
-      "reason": "service disrupted"
-    }
-  ]
+  "past_incidents": []
 }
