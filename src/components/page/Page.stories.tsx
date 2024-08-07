@@ -119,16 +119,9 @@ AllSystemsOperational.args = {
       />
 
       <OperationalStatus
-        title="Service disruptions"
-        lastUpdated=""
-        services={data.services}
-        filter={ServiceStatus.FAILURE}
-      />
-
-      <OperationalStatus
         title="Operational status"
         lastUpdated=""
-        services={data.services}
+        services={data.services.slice(1)}
         filter={ServiceStatus.OK}
       />
 

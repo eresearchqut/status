@@ -43,20 +43,18 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
     ? services.filter((service) => service.status === filter)
     : services;
 
-  const hasDisruptedService = filteredData?.some(
+  const hasDisruptedService = services?.some(
     (service: any) => service?.status !== ServiceStatus.OK
   );
 
-  const noDisruptedService = !services?.some(
-    (service: any) => service?.status === ServiceStatus.FAILURE
-  );
+  const noDisruptedService = !hasDisruptedService;
 
   if (filteredData.length === 0) return null;
 
   return (
     <Stack spacing={2}>
       <Heading as="h3">{title}</Heading>
-      {filter && hasDisruptedService && (
+      {filter === ServiceStatus.FAILURE && hasDisruptedService && (
         <Alert status="error" variant="solid">
           <AlertIcon />
           <AlertTitle>
@@ -68,6 +66,12 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
         <Alert status="success" variant="solid">
           <AlertIcon />
           <AlertTitle>All systems are operational</AlertTitle>
+        </Alert>
+      )}
+      {filter === ServiceStatus.OK && hasDisruptedService && (
+        <Alert status="success" variant="solid">
+          <AlertIcon />
+          <AlertTitle>The following systems are operational</AlertTitle>
         </Alert>
       )}
       {filteredData && filteredData.length > 0 && (
