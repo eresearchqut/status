@@ -62,18 +62,23 @@ EOF
 load_current_incidents() {
   local json_objects=""
 
-  while IFS=',' read -r service date_time reason; do
+  while IFS=',' read -r name detected status; do
     # Check for no ongoing incidents
-    if [[ "$service" == "" ]]; then
+    if [[ "name" == "" ]]; then
       break
     fi
+
+    # Trim spaces
+    name=$(trim_spaces "$name")
+    detected=$(trim_spaces "$detected")
+    status=$(trim_spaces "$status")
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
-      "service": "$service",
-      "date_time": "$date_time",
-      "reason": "$reason"
+      "name": "$name",
+      "detected": "$detected",
+      "status": "$status"
     }
 EOF
 )
@@ -82,7 +87,7 @@ EOF
     else
       json_objects="$json_objects, $json_object"
     fi
-  done < <(tail -n +2 "$INCIDENTS_FILE")
+  done < <(tail -n +1 "$INCIDENTS_FILE")
 
   # Add JSON objects to the main JSON structure
   if [ -n "$json_objects" ]; then
