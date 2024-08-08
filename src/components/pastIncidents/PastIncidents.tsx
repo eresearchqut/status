@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Text, Stack, Heading, StackDivider } from "@chakra-ui/react";
 
-interface Incident {
+export interface Incident {
   date: string;
   service: string;
   reason: string;

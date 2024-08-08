@@ -49,6 +49,9 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
 
   const noDisruptedService = !hasDisruptedService;
 
+  const convertDate = (isoDate: string) =>
+    `${new Date(isoDate).toLocaleTimeString("en-AU")} ${new Date(isoDate).toLocaleDateString("en-AU")}`;
+
   if (filteredData.length === 0) return null;
 
   return (
@@ -87,7 +90,9 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
             {filteredData.map((service: any) => (
               <Tr key={service?.name}>
                 <Td>{service?.name}</Td>
-                {hasDisruptedService && <Td>{service?.detected}</Td>}
+                {hasDisruptedService && (
+                  <Td>{convertDate(service?.detected)}</Td>
+                )}
                 <Td isNumeric>
                   <Tag
                     variant="subtle"
