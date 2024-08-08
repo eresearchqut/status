@@ -64,7 +64,7 @@ load_current_incidents() {
 
   while IFS=',' read -r name detected status; do
     # Check for no ongoing incidents
-    if [[ "name" == "" ]]; then
+    if [[ "$name" == "" ]]; then
       break
     fi
 
