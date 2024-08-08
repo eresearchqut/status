@@ -26,7 +26,6 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
   props
 ) => {
   const { header, children } = props;
-  console.log(props.header);
   const templateAreas = `"header" "navigation" "main" "footer"`;
   const gridTemplateRows = "auto auto 1fr auto";
   const styles = useMultiStyleConfig("Page", props);
