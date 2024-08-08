@@ -40,7 +40,7 @@ WORKDIR /app
 
 # Install necessary packages as root
 USER root
-RUN apk add --no-cache bash curl jq
+RUN apk add --no-cache bash curl jq tzdata
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -77,6 +77,9 @@ RUN chmod -R 777 /app/public
 RUN chmod +x /app/startup.sh /app/status.sh /app/incidents.sh /app/planned_maintenance.sh
 
 USER nextjs
+
+# Set the timezone environment variable
+ENV TZ=Australia/Brisbane
 
 EXPOSE 8080
 
