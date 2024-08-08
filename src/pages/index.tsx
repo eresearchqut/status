@@ -89,6 +89,7 @@ const Home: NextPage = () => {
               title={"Service disruptions"}
               lastUpdated={incidentsData?.last_updated}
               services={incidentsData.current_incidents}
+              filter={ServiceStatus.FAILURE}
             />
           )}
           {statusData && statusData?.services?.length > 0 && (

@@ -39,11 +39,11 @@ Data for current incident is from [incidents.csv](incidents.csv). There are two 
 To update [incidents.csv](incidents.csv), In case any incident happens, remove the line "No ongoing incidents" and replace with the following format (values separated with a comma): `PBS Server, 2024-07-02T15:53:42+1000, Disrupted`. 
 
 #### Current Incidents Data Values Descriptions
-| # | Value Name   | Description                            | Data Type          | Example Value            |
-|---|--------------|----------------------------------------|--------------------|--------------------------|
-| 1 | Service Name | Name of the service disrupted          | String             | PBS Server               |
-| 2 | Reported     | The date and time outage were reported | ISO 8601 Date Time | 2024-07-02T15:53:42+1000 |
-| 3 | Reason       | The cause/reason for the outage        | String             | Disrupted                |
+| # | Value Name   | Description                                               | Data Type          | Example Value            |
+|---|--------------|-----------------------------------------------------------|--------------------|--------------------------|
+| 1 | Service Name | Name of the service disrupted                             | String             | PBS Server               |
+| 2 | Reported     | The date and time outage were reported                    | ISO 8601 Date Time | 2024-07-02T15:53:42+1000 |
+| 3 | Status       | The current status of the service, only `FAILURE` allowed | String             | FAILURE                  |
 
 **Important Notes:** Please remove current incident records once that service(s) have recovered from the outage to keep the status updated.
 
