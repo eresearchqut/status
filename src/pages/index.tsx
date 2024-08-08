@@ -4,13 +4,14 @@ import Head from "next/head";
 import site from "../../public/site.json";
 import Page from "../components/page/Page";
 
-import { PlannedMaintenance } from "../components/plannedMaintenance";
+import {
+  PlannedMaintenance,
+  PlannedMaintenanceItem,
+} from "../components/plannedMaintenance";
 import { OperationalStatus, Service } from "../components/operationalStatus";
-import { PastIncidents } from "../components/pastIncidents";
+import { PastIncidents, Incident } from "../components/pastIncidents";
 import { ServiceStatus } from "../components/operationalStatus/OperationalStatus";
 
-import incidentsJsonData from "../../public/incidents.json";
-import plannedMaintenanceJsonData from "../../public/planned_maintenance.json";
 import { useEffect, useState } from "react";
 
 interface StatusData {
@@ -18,30 +19,49 @@ interface StatusData {
   services: Service[];
 }
 
+interface IncidentData {
+  last_updated: string;
+  current_incidents: Service[];
+  past_incidents: Incident[];
+}
+
+interface PlannedMaintenanceData {
+  last_updated: string;
+  planned_maintenance: PlannedMaintenanceItem[];
+}
+
 const Home: NextPage = () => {
   const [statusData, setStatusData] = useState<StatusData | null>(null);
-  const incidentsData = incidentsJsonData;
-  const plannedMaintenanceData = plannedMaintenanceJsonData;
+  const [incidentsData, setIncidentData] = useState<IncidentData | null>(null);
+  const [plannedMaintenanceData, setPlannedMaintenanceData] =
+    useState<PlannedMaintenanceData | null>(null);
+
+  const fetchData = async (dataFilePath: string, setData: any) => {
+    try {
+      const response = await fetch(dataFilePath);
+      if (!response.ok) {
+        throw new Error(`Error fetching data from ${dataFilePath}!`);
+      }
+      const data = await response.json();
+      setData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStatusData = async () => {
-      try {
-        const response = await fetch("./status.json");
-        if (!response.ok) {
-          console.error("Network response was not ok");
-        }
-        const data = await response.json();
-        setStatusData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     // Initial fetch
-    fetchStatusData();
+    const fetchAllData = async () => {
+      await fetchData("./status.json", setStatusData);
+      await fetchData("./incidents.json", setIncidentData);
+      await fetchData("./planned_maintenance.json", setPlannedMaintenanceData);
+    };
+
+    fetchAllData();
 
     // Poll every 60 seconds
     const intervalId = setInterval(async () => {
-      await fetchStatusData();
+      await fetchData("./status.json", setStatusData);
     }, 60000);
 
     // Clean up interval on component unmount
@@ -58,20 +78,20 @@ const Home: NextPage = () => {
       <Page {...site}>
         <Stack spacing={12}>
           {plannedMaintenanceData &&
-            plannedMaintenanceData?.planned_maintenance.length > 0 && (
+            plannedMaintenanceData?.planned_maintenance?.length > 0 && (
               <PlannedMaintenance
                 lastUpdated={""}
                 plannedMaintenances={plannedMaintenanceData.planned_maintenance}
               />
             )}
-          {incidentsData && incidentsData?.current_incidents.length > 0 && (
+          {incidentsData && incidentsData?.current_incidents?.length > 0 && (
             <OperationalStatus
               title={"Service disruptions"}
               lastUpdated={incidentsData?.last_updated}
               services={incidentsData.current_incidents}
             />
           )}
-          {statusData && statusData?.services.length > 0 && (
+          {statusData && statusData?.services?.length > 0 && (
             <OperationalStatus
               title={"Service disruptions"}
               lastUpdated={statusData?.last_updated}
@@ -87,7 +107,7 @@ const Home: NextPage = () => {
               filter={ServiceStatus.OK}
             />
           )}
-          {incidentsData && incidentsData?.past_incidents.length > 0 && (
+          {incidentsData && incidentsData?.past_incidents?.length > 0 && (
             <PastIncidents
               title={"Past incidents"}
               subTitle={"Showing all past incidents"}
