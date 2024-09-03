@@ -2,9 +2,10 @@ import React, { FunctionComponent } from "react";
 import { Text, Stack, Heading, StackDivider } from "@chakra-ui/react";
 
 export interface Incident {
-  date: string;
-  service: string;
+  name: string;
   reason: string;
+  reported: string;
+  restored?: string;
 }
 
 export interface PastIncidentsProps {
@@ -41,7 +42,8 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
         {incidents.map((incident: any, index: number) => (
           <Stack spacing={2} key={index}>
             <Heading as="h4" fontSize="2xl">
-              {convertDateStr(incident?.date)}
+              {convertDateStr(incident?.reported)} -{" "}
+              {convertDateStr(incident?.restored)}
             </Heading>
             <Text>
               {incident?.service} - {incident?.reason}

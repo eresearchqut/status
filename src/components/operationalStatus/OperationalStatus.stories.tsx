@@ -21,6 +21,17 @@ Default.args = {
       error: "404",
     },
     {
+      name: "HPC-FS",
+      reported: "2024-07-02T15:53:42+1000",
+      status: ServiceStatus.FAILURE,
+    },
+    {
+      name: "PBS Server",
+      reported: "2024-07-20T11:53:42+1000",
+      reason: "Service Interrupted",
+      status: ServiceStatus.FAILURE,
+    },
+    {
       name: "Lyra login node",
       status: ServiceStatus.OK,
     },
@@ -42,7 +53,7 @@ Default.args = {
 export const AllOperational = Template.bind({});
 AllOperational.args = {
   ...Default.args,
-  services: [...(Default.args.services?.slice(1) as Array<Service>)],
+  services: [...(Default.args.services?.slice(3) as Array<Service>)],
   filter: ServiceStatus.OK,
 };
 export const Disruptions = Template.bind({});

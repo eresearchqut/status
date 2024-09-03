@@ -31,18 +31,20 @@ convert_csv_to_json() {
   local json_array_name=$2
   local json_objects=""
 
-  while IFS=',' read -r date service reason; do
+  while IFS=',' read -r name reason reported restored; do
     # Trim spaces
-    date=$(trim_spaces "$date")
-    service=$(trim_spaces "$service")
+    name=$(trim_spaces "$name")
     reason=$(trim_spaces "$reason")
+    reported=$(trim_spaces "$reported")
+    restored=$(trim_spaces "$restored")
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
-      "date": "$date",
-      "service": "$service",
-      "reason": "$reason"
+      "name": "$name",
+      "reason": "$reason",
+      "reported": "$reported",
+      "restored": "$restored",
     }
 EOF
 )
@@ -62,7 +64,7 @@ EOF
 load_current_incidents() {
   local json_objects=""
 
-  while IFS=',' read -r name detected status; do
+  while IFS=',' read -r name reason reported; do
     # Check for no ongoing incidents
     if [[ "$name" == "" ]]; then
       break
@@ -70,15 +72,16 @@ load_current_incidents() {
 
     # Trim spaces
     name=$(trim_spaces "$name")
-    detected=$(trim_spaces "$detected")
-    status=$(trim_spaces "$status")
+    reason=$(trim_spaces "$reason")
+    reported=$(trim_spaces "$reported")
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
       "name": "$name",
-      "detected": "$detected",
-      "status": "$status"
+      "reason": "$reason",
+      "reported": "$reported",
+      "status": "FAILURE",
     }
 EOF
 )

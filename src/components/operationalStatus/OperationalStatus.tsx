@@ -22,8 +22,9 @@ export enum ServiceStatus {
 
 export interface Service {
   name: string;
+  reason?: string;
+  reported?: string;
   status: ServiceStatus;
-  detected?: string;
   error?: string;
 }
 
@@ -82,7 +83,8 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
           <Thead>
             <Tr>
               <Th>Service</Th>
-              {hasDisruptedService && <Th>Detected</Th>}
+              {hasDisruptedService && <Th>Reported</Th>}
+              {hasDisruptedService && <Th>Reason</Th>}
               <Th isNumeric>Status</Th>
             </Tr>
           </Thead>
@@ -91,7 +93,16 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
               <Tr key={service?.name}>
                 <Td>{service?.name}</Td>
                 {hasDisruptedService && (
-                  <Td>{convertDate(service?.detected)}</Td>
+                  <Td>
+                    {service?.reported != null
+                      ? convertDate(service?.reported)
+                      : "Unknown"}
+                  </Td>
+                )}
+                {hasDisruptedService && (
+                  <Td>
+                    {service?.reason != null ? service?.reason : "Unknown"}
+                  </Td>
                 )}
                 <Td isNumeric>
                   <Tag
