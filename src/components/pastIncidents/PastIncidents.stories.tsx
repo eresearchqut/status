@@ -17,22 +17,26 @@ Simple.args = {
   lastUpdated: "2024-07-02T15:53:42+1000",
   incidents: [
     {
-      date: "2024-04-16T10:53:42+1000",
+      startDate: "2024-04-16T10:53:42+1000",
+      endDate: "2024-04-17T10:53:42+1000",
       service: "PB Server",
       reason: "service disrupted",
     },
     {
-      date: "2024-02-12T09:43:42+1000",
+      startDate: "2024-02-12T09:43:42+1000",
+      endDate: "2024-02-13T09:53:42+1000",
       service: "HPC-FS",
       reason: "Scheduled maintenance",
     },
     {
-      date: "2023-12-13T06:33:42+1000",
+      startDate: "2023-12-13T06:33:42+1000",
+      endDate: "2023-12-15T06:33:42+1000",
       service: "PB Server",
       reason: "service disrupted",
     },
     {
-      date: "2023-10-19T07:33:32+1000",
+      startDate: "2023-10-19T07:33:32+1000",
+      endDate: "2023-10-20T07:33:42+1000",
       service: "HPC-FS",
       reason: "Scheduled maintenance",
     },

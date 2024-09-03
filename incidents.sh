@@ -31,16 +31,18 @@ convert_csv_to_json() {
   local json_array_name=$2
   local json_objects=""
 
-  while IFS=',' read -r date service reason; do
+  while IFS=',' read -r start_date end_date service reason; do
     # Trim spaces
-    date=$(trim_spaces "$date")
+    start_date=$(trim_spaces "$start_date")
+    end_date=$(trim_spaces "$end_date")
     service=$(trim_spaces "$service")
     reason=$(trim_spaces "$reason")
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
-      "date": "$date",
+      "startDate": "$start_date",
+      "endDate": "$end_date",
       "service": "$service",
       "reason": "$reason"
     }
