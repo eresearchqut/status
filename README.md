@@ -52,14 +52,15 @@ After editing, commit your changes, the system will re-build itself and you shal
 ### Past Incidents
 Data for past incident is from [past_incidents.csv](past_incidents.csv). When you open the file, you will either see an empty file means there are no past incidents history, and if you see date, system and reason means there are incidents happened in the past.
 
-To update [past_incidents.csv](past_incidents.csv), if the file is empty and you want to add a history, add a line with the following format (values separated with a comma): `2024-07-20, HPC-FS, scheduled maintenance`.
+To update [past_incidents.csv](past_incidents.csv) by adding a past incident history, add a new line with the following format (values separated with a comma):`2024-07-20, 2024-07-21, HPC-FS, scheduled maintenance`.
 
 #### Past Incidents Data Values Descriptions
 | # | Value Name   | Description                     | Data Type     | Example Value         |
 |---|--------------|---------------------------------|---------------|-----------------------|
-| 1 | Date         | The date of outage reported     | ISO 8601 Date | 2024-07-20            |
-| 2 | Service Name | Name of the service disrupted   | String        | HPC-FS                |
-| 3 | Reason       | The cause/reason for the outage | String        | scheduled maintenance |
+| 1 | Date From    | The date of outage started      | ISO 8601 Date | 2024-07-20            |
+| 2 | Date To      | The date of outage ended        | ISO 8601 Date | 2024-07-21            |
+| 3 | Service Name | Name of the service disrupted   | String        | HPC-FS                |
+| 4 | Reason       | The cause/reason for the outage | String        | scheduled maintenance |
 
 
 After editing, commit your changes, the system will re-build itself and you shall see the updates.
