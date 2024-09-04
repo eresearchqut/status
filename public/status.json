@@ -1,9 +1,9 @@
 {
-  "last_updated": "2024-08-07T15:53:22+1000",
+  "last_updated": "2024-09-04T12:49:47+1000",
   "services": [
     { "name": "eResearch Portal", "status": "OK" },
     { "name": "Jupyter Hub", "status": "OK" },
-    { "name": "Lyra login node", "status": "OK" },
+    { "name": "Lyra login node / HPC", "status": "OK" },
     { "name": "rVDI", "status": "OK" },
     { "name": "XNAT", "status": "OK" }
   ]
