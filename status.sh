@@ -23,33 +23,33 @@ check(){
     name="${3}"
     expectedcode="${4}"
 
-    # Sanitize the name by replacing / with _ so it will not be treated as part of file path.
-    tmp_name="$(echo "${name}" | sed 's,/,_,' )"
+    # Sanitise the name by replacing / with _ so it will not be treated as part of file path.
+    sanitised_name="$(echo "${name}" | sed 's,/,_,' )"
 
     IPv="$(echo "${ctype}" | grep -o '[46]$')"
     case "${ctype}" in
         http*)
-            statuscode="$(curl -${IPv}sSkLo /dev/null -H "${useragent}" -m "${timeout}" -w "%{http_code}" "${host}" 2> "${tmp}/ko/${tmp_name}.error")";;
+            statuscode="$(curl -${IPv}sSkLo /dev/null -H "${useragent}" -m "${timeout}" -w "%{http_code}" "${host}" 2> "${tmp}/ko/${sanitised_name}.error")";;
         ping*)
             ping -${IPv}W "${timeout}" -c 1 "${host}" >/dev/null 2>&1
             statuscode=$?
-            [ "${statuscode}" -ne "${expectedcode}" ] && echo 'Host unreachable' > "${tmp}/ko/${tmp_name}.error";;
+            [ "${statuscode}" -ne "${expectedcode}" ] && echo 'Host unreachable' > "${tmp}/ko/${sanitised_name}.error";;
         port*)
             error="$(nc -${IPv}w "${timeout}" -zv ${host} 2>&1)"
             statuscode=$?
-            [ "${statuscode}" -ne "${expectedcode}" ] && echo "${error}" > "${tmp}/ko/${tmp_name}.error";;
+            [ "${statuscode}" -ne "${expectedcode}" ] && echo "${error}" > "${tmp}/ko/${sanitised_name}.error";;
     esac
 
     # verity status and write files
     if [ "${statuscode}" -eq "${expectedcode}" ]; then
-        echo "${statuscode}" > "${tmp}/ok/${tmp_name}.status"
+        echo "${statuscode}" > "${tmp}/ok/${sanitised_name}.status"
     else
-        echo "${statuscode}" > "${tmp}/ko/${tmp_name}.status"
+        echo "${statuscode}" > "${tmp}/ko/${sanitised_name}.status"
     fi
-    if [ -s "${tmp}/ko/${tmp_name}.error" ]; then
-        sed "${tmp}/ko/${tmp_name}.error" \
+    if [ -s "${tmp}/ko/${sanitised_name}.error" ]; then
+        sed "${tmp}/ko/${sanitised_name}.error" \
           -e 's,curl: ([0-9]*) ,,' \
-          -e 's,.*) failed: ,,' > "${tmp}/ko/${tmp_name}.status"
+          -e 's,.*) failed: ,,' > "${tmp}/ko/${sanitised_name}.status"
     fi
 }
 
