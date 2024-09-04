@@ -1,13 +1,17 @@
 import { FunctionComponent, PropsWithChildren } from "react";
 import {
+  Alert,
+  AlertIcon,
   Box,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   chakra,
   Grid,
   GridItem,
   HeadingProps,
+  Link,
   useColorModeValue,
   useMultiStyleConfig,
 } from "@chakra-ui/react";
@@ -59,6 +63,21 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
               <CardBody px={12} pt={0}>
                 {children}
               </CardBody>
+
+              <CardFooter px={12} pt={6}>
+                <Alert status={"info"} variant={"left-accent"}>
+                  <AlertIcon />
+                  If you have any feedback regarding this site, please contact
+                  us:{" "}
+                  <Link
+                    href="mailto:eresearch@qut.edu.au"
+                    color="teal.500"
+                    isExternal
+                  >
+                    eresearch@qut.edu.au
+                  </Link>
+                </Alert>
+              </CardFooter>
             </Card>
           </chakra.main>
         </Box>
