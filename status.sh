@@ -23,30 +23,33 @@ check(){
     name="${3}"
     expectedcode="${4}"
 
+    # Sanitise the name by replacing / with _ so it will not be treated as part of file path.
+    sanitised_name="$(echo "${name}" | sed 's,/,_,' )"
+
     IPv="$(echo "${ctype}" | grep -o '[46]$')"
     case "${ctype}" in
         http*)
-            statuscode="$(curl -${IPv}sSkLo /dev/null -H "${useragent}" -m "${timeout}" -w "%{http_code}" "${host}" 2> "${tmp}/ko/${name}.error")";;
+            statuscode="$(curl -${IPv}sSkLo /dev/null -H "${useragent}" -m "${timeout}" -w "%{http_code}" "${host}" 2> "${tmp}/ko/${sanitised_name}.error")";;
         ping*)
             ping -${IPv}W "${timeout}" -c 1 "${host}" >/dev/null 2>&1
             statuscode=$?
-            [ "${statuscode}" -ne "${expectedcode}" ] && echo 'Host unreachable' > "${tmp}/ko/${name}.error";;
+            [ "${statuscode}" -ne "${expectedcode}" ] && echo 'Host unreachable' > "${tmp}/ko/${sanitised_name}.error";;
         port*)
             error="$(nc -${IPv}w "${timeout}" -zv ${host} 2>&1)"
             statuscode=$?
-            [ "${statuscode}" -ne "${expectedcode}" ] && echo "${error}" > "${tmp}/ko/${name}.error";;
+            [ "${statuscode}" -ne "${expectedcode}" ] && echo "${error}" > "${tmp}/ko/${sanitised_name}.error";;
     esac
 
     # verity status and write files
     if [ "${statuscode}" -eq "${expectedcode}" ]; then
-        echo "${statuscode}" > "${tmp}/ok/${name}.status"
+        echo "${statuscode}" > "${tmp}/ok/${sanitised_name}.status"
     else
-        echo "${statuscode}" > "${tmp}/ko/${name}.status"
+        echo "${statuscode}" > "${tmp}/ko/${sanitised_name}.status"
     fi
-    if [ -s "${tmp}/ko/${name}.error" ]; then
-        sed "${tmp}/ko/${name}.error" \
+    if [ -s "${tmp}/ko/${sanitised_name}.error" ]; then
+        sed "${tmp}/ko/${sanitised_name}.error" \
           -e 's,curl: ([0-9]*) ,,' \
-          -e 's,.*) failed: ,,' > "${tmp}/ko/${name}.status"
+          -e 's,.*) failed: ,,' > "${tmp}/ko/${sanitised_name}.status"
     fi
 }
 
@@ -75,18 +78,17 @@ services=()
 for file in "${tmp}/ko/"*.status; do
     [ -e "${file}" ] || continue
     name="$(basename "${file}" | sed 's,.status$,,')"
+    display_name="${name//_/\/}"
     status="$(cat "${file}")"
-    services+=("{\"name\":\"${name}\",\"status\":\"FAILURE\",\"error\":\"${status}\"}")
+    services+=("{\"name\":\"${display_name}\",\"status\":\"FAILURE\",\"error\":\"${status}\"}")
 done
 for file in "${tmp}/ok/"*.status; do
     [ -e "${file}" ] || continue
     name="$(basename "${file}" | sed 's,.status$,,')"
-    services+=("{\"name\":\"${name}\",\"status\":\"OK\"}")
+    display_name="${name//_/\/}"
+    services+=("{\"name\":\"${display_name}\",\"status\":\"OK\"}")
 done
 
 last_updated=$(date +"%Y-%m-%dT%H:%M:%S%z")
 printf -v joined '%s,' "${services[@]}"
 echo "{\"last_updated\":\"${last_updated}\",\"services\":[${joined%,}]}"
-
-
-
