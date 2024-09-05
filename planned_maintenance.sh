@@ -34,6 +34,11 @@ convert_csv_to_json() {
     date_time_to=$(trim_spaces "$date_time_to")
     impact=$(trim_spaces "$impact")
 
+    # Skip the line if any field is empty
+    if [ -z "$service" ] || [ -z "$date_time_from" ] || [ -z "$date_time_to" ] || [ -z "$impact" ]; then
+      continue
+    fi
+
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
