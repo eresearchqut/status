@@ -31,15 +31,15 @@ convert_csv_to_json() {
   local json_array_name=$2
   local json_objects=""
 
-  while IFS=',' read -r name reason reported restored; do
+  while IFS=',' read -r name impact reported restored; do
     # Skip the line if any field is empty
-    if [ -z "$name" ] || [ -z "$reason" ] || [ -z "$reported" ] || [ -z "$restored" ]; then
+    if [ -z "$name" ] || [ -z "$impact" ] || [ -z "$reported" ] || [ -z "$restored" ]; then
       continue
     fi
 
     # Trim spaces
     name=$(trim_spaces "$name")
-    reason=$(trim_spaces "$reason")
+    impact=$(trim_spaces "$impact")
     reported=$(trim_spaces "$reported")
     restored=$(trim_spaces "$restored" | tr -d '\r')
 
@@ -47,7 +47,7 @@ convert_csv_to_json() {
     json_object=$(cat <<EOF
     {
       "name": "$name",
-      "reason": "$reason",
+      "impact": "$impact",
       "reported": "$reported",
       "restored": "$restored",
     }
@@ -69,22 +69,22 @@ EOF
 load_current_incidents() {
   local json_objects=""
 
-  while IFS=',' read -r name reason reported; do
+  while IFS=',' read -r name impact reported; do
     # Skip the line if any field is empty
-    if [ -z "$name" ] || [ -z "$reason" ] || [ -z "$reported" ]; then
+    if [ -z "$name" ] || [ -z "$impact" ] || [ -z "$reported" ]; then
       continue
     fi
 
     # Trim spaces
     name=$(trim_spaces "$name")
-    reason=$(trim_spaces "$reason")
+    impact=$(trim_spaces "$impact")
     reported=$(trim_spaces "$reported" | tr -d '\r')
 
     # Create JSON object for each row
     json_object=$(cat <<EOF
     {
       "name": "$name",
-      "reason": "$reason",
+      "impact": "$impact",
       "reported": "$reported",
       "status": "FAILURE",
     }
