@@ -3,7 +3,7 @@ import { Text, Stack, Heading, StackDivider } from "@chakra-ui/react";
 
 export interface Incident {
   name: string;
-  reason: string;
+  impact: string;
   reported: string;
   restored?: string;
 }
@@ -46,7 +46,7 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
               {convertDateStr(incident?.restored)}
             </Heading>
             <Text>
-              {incident?.service} - {incident?.reason}
+              {incident?.service} - {incident?.impact}
             </Text>
           </Stack>
         ))}

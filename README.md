@@ -34,25 +34,25 @@ This starter kit comes with the `@storybook/addon-a11y` which is used to check f
 There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage.
 
 ### Current Incidents
-Data for current incident is from [incidents.csv](incidents.csv). There are two formats accepted for different situations. When you open the file, you will either see "No ongoing incidents" means there are no reported incidents currently, and if you see date time, system and reason means a specific system is out of service currently.
+Data for current incident is from [incidents.csv](incidents.csv). There are two formats accepted for different situations. When you open the file, you will either see an empty file means there are no reported ongoing incidents, and if you see date time, system and impact means a specific system is out of service currently.
 
 To update [incidents.csv](incidents.csv), In case any incident happens, remove the line "No ongoing incidents" and replace with the following format (values separated with a comma): 
 
-`PBS Server, Disrupted, 2024-07-02T15:53:42+1000`. 
+`PBS Server, PBS service disrupted, 2024-07-02T15:53:42+1000`. 
 
 #### Current Incidents Data Values Descriptions
-| # | Value Name   | Description                              | Data Type          | Example Value            |
-|---|--------------|------------------------------------------|--------------------|--------------------------|
-| 1 | Service Name | Name of the service disrupted            | String             | PBS Server               |
-| 2 | Reason       | The cause/reason for the outage          | String             | FAILURE                  |
-| 3 | Reported     | The date and time outage were reported   | ISO 8601 Date Time | 2024-07-02T15:53:42+1000 |
+| # | Value Name   | Description                            | Data Type          | Example Value            |
+|---|--------------|----------------------------------------|--------------------|--------------------------|
+| 1 | Service Name | Name of the service disrupted          | String             | PBS Server               |
+| 2 | Impact       | The impact caused by the outage        | String             | PBS service disrupted    |
+| 3 | Reported     | The date and time outage were reported | ISO 8601 Date Time | 2024-07-02T15:53:42+1000 |
 
 **Important Notes:** Please remove current incident records once that service(s) have recovered from the outage to keep the status updated.
 
 After editing, commit your changes, the system will re-build itself and you shall see the updates.
 
 ### Past Incidents
-Data for past incident is from [past_incidents.csv](past_incidents.csv). When you open the file, you will either see an empty file means there are no past incidents history, and if you see date, system and reason means there are incidents happened in the past.
+Data for past incident is from [past_incidents.csv](past_incidents.csv). When you open the file, you will either see an empty file means there are no past incidents history, and if you see date, system and impact means there are incident(s) happened in the past.
 
 To update [past_incidents.csv](past_incidents.csv) by adding a past incident history, add a new line with the following format (values separated with a comma):
 
@@ -64,7 +64,7 @@ To update [past_incidents.csv](past_incidents.csv) by adding a past incident his
 | # | Value Name   | Description                          | Data Type          | Example Value            |
 |---|--------------|--------------------------------------|--------------------|--------------------------|
 | 1 | Service Name | Name of the service disrupted        | String             | HPC-FS                   |
-| 2 | Reason       | The cause/reason for the outage      | String             | Scheduled maintenance    |
+| 2 | Impact       | The impact caused by the outage      | String             | Scheduled maintenance    |
 | 3 | Reported     | The date and time of outage reported | ISO 8601 Date Time | 2024-07-20T11:53:42+1000 |
 | 4 | Restored     | The date and time of outage restored | ISO 8601 Date Time | 2024-07-21T13:13:42+1000 |
 

@@ -28,7 +28,7 @@ Default.args = {
     {
       name: "PBS Server",
       reported: "2024-07-20T11:53:42+1000",
-      reason: "Service Interrupted",
+      impact: "Service Interrupted",
       status: ServiceStatus.FAILURE,
     },
     {
