@@ -1,24 +1,29 @@
-import { FunctionComponent, PropsWithChildren } from "react";
-import { Stack } from "@chakra-ui/react";
+import { Fragment, FunctionComponent, PropsWithChildren } from "react";
+import { Show, Stack } from "@chakra-ui/react";
 import { Markdown } from "../markdown";
 
 export interface FooterProps {
-  acknowledgement?: string;
-  notice?: string;
+  acknowledgement: string;
+  notice: string;
+  shortNotice?: string;
 }
 
 export const Footer: FunctionComponent<PropsWithChildren<FooterProps>> = (
   props
 ) => {
-  const { acknowledgement, notice, children } = props;
+  const { acknowledgement, notice, shortNotice, children } = props;
   return (
-    <Stack
-      direction={["column", "row"]}
-      justifyContent={["flex-start", "space-between"]}
-    >
-      {acknowledgement && <Markdown markdown={acknowledgement} />}
+    <Stack direction={["row"]} justifyContent={["space-between"]}>
+      <Markdown markdown={acknowledgement} />
       {children}
-      {notice && <Markdown markdown={notice} />}
+      <Fragment>
+        <Show below={"md"}>
+          <Markdown markdown={shortNotice ?? notice} />
+        </Show>
+        <Show above={"md"}>
+          <Markdown markdown={notice} />
+        </Show>
+      </Fragment>
     </Stack>
   );
 };
