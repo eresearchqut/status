@@ -16,6 +16,7 @@ import {
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 import { Header, HeaderProps } from "../header";
+import { Footer } from "../footer";
 
 export interface PageProps {
   header: HeaderProps;
@@ -78,6 +79,19 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
                   </Link>
                 </Alert>
               </CardFooter>
+              <Box p={12} pt={6}>
+                <Footer
+                  acknowledgement={
+                    "[QUT acknowledges the Traditional Owners of the lands where QUT now stands.](https://www.qut.edu.au/about/indigenous)"
+                  }
+                  notice={
+                    "TEQSA Provider ID [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) Australian University | CRICOS No. 00213J"
+                  }
+                  shortNotice={
+                    "TEQSA [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) | CRICOS 00213J"
+                  }
+                />
+              </Box>
             </Card>
           </chakra.main>
         </Box>

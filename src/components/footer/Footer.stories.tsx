@@ -14,3 +14,21 @@ Default.args = {
   acknowledgement:
     "[Acknowledgement of Country](https://www.indigenous.gov.au/contact-us/welcome_acknowledgement-country)",
 };
+
+export const TEQSAAndCRICOS = Template.bind({});
+TEQSAAndCRICOS.args = {
+  notice:
+    "TEQSA Provider ID [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) Australian University | CRICOS No. 00213J",
+  acknowledgement:
+    "[Acknowledgement of Country](https://www.indigenous.gov.au/contact-us/welcome_acknowledgement-country)",
+};
+
+export const TEQSAAndCRICOSWithShortNotice = Template.bind({});
+TEQSAAndCRICOSWithShortNotice.args = {
+  notice:
+    "TEQSA Provider ID [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) Australian University | CRICOS No. 00213J",
+  shortNotice:
+    "TEQSA [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) | CRICOS 00213J",
+  acknowledgement:
+    "[Acknowledgement of Country](https://www.indigenous.gov.au/contact-us/welcome_acknowledgement-country)",
+};
