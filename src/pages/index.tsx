@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Stack } from "@chakra-ui/react";
+import { Box, Link, Stack, StackDivider } from "@chakra-ui/react";
 import Head from "next/head";
 import site from "../../public/site.json";
 import Page from "../components/page/Page";
@@ -13,6 +13,7 @@ import { PastIncidents, Incident } from "../components/pastIncidents";
 import { ServiceStatus } from "../components/operationalStatus/OperationalStatus";
 
 import { useEffect, useState } from "react";
+import { Footer } from "../components";
 
 interface StatusData {
   last_updated: string;
@@ -118,6 +119,43 @@ const Home: NextPage = () => {
           )}
         </Stack>
       </Page>
+      <Footer>
+        <Stack
+          p={6}
+          direction={{ base: "column", md: "row" }}
+          divider={<StackDivider borderColor="gray.200" />}
+          spacing={"12px"}
+        >
+          <Box>
+            <abbr title={"Tertiary Education Quality and Standards Agency"}>
+              TEQSA
+            </abbr>{" "}
+            Provider ID{" "}
+            <Link
+              href={
+                "https://www.teqsa.gov.au/provider/queensland-university-technology"
+              }
+              isExternal
+            >
+              PRV12079
+            </Link>{" "}
+            Australian University
+          </Box>
+          <Box>
+            <abbr
+              title={
+                "Commonwealth Register of Institutions and Courses for Overseas Students"
+              }
+            >
+              CRICOS
+            </abbr>{" "}
+            No. 00213J
+          </Box>
+          <Box>
+            <abbr title={"Australian Business Number"}>ABN</abbr> 83 791 724 622
+          </Box>
+        </Stack>
+      </Footer>
     </>
   );
 };

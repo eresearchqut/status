@@ -3,8 +3,8 @@ import { Stack } from "@chakra-ui/react";
 import { Markdown } from "../markdown";
 
 export interface FooterProps {
-  acknowledgement: string;
-  notice: string;
+  acknowledgement?: string;
+  notice?: string;
 }
 
 export const Footer: FunctionComponent<PropsWithChildren<FooterProps>> = (
@@ -16,9 +16,9 @@ export const Footer: FunctionComponent<PropsWithChildren<FooterProps>> = (
       direction={["column", "row"]}
       justifyContent={["flex-start", "space-between"]}
     >
-      <Markdown markdown={acknowledgement} />
+      {acknowledgement && <Markdown markdown={acknowledgement} />}
       {children}
-      <Markdown markdown={notice} />
+      {notice && <Markdown markdown={notice} />}
     </Stack>
   );
 };
