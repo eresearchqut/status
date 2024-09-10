@@ -1,8 +1,7 @@
 import { FunctionComponent, PropsWithChildren } from "react";
 import {
-  Alert,
-  AlertIcon,
   Box,
+  Button,
   Card,
   CardBody,
   CardFooter,
@@ -11,12 +10,13 @@ import {
   Grid,
   GridItem,
   HeadingProps,
-  Link,
   useColorModeValue,
   useMultiStyleConfig,
+  VStack,
 } from "@chakra-ui/react";
 import { Header, HeaderProps } from "../header";
 import { Footer } from "../footer";
+import { EmailIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 export interface PageProps {
   header: HeaderProps;
@@ -66,32 +66,34 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
               </CardBody>
 
               <CardFooter px={12} pt={6}>
-                <Alert status={"info"} variant={"left-accent"}>
-                  <AlertIcon />
-                  If you have any feedback regarding this site, please contact
-                  us:{" "}
-                  <Link
+                <VStack spacing={12} align="stretch" width="100%">
+                  <Button
+                    as="a"
                     href="mailto:eresearch@qut.edu.au"
-                    color="teal.500"
-                    isExternal
+                    justifyContent="space-between"
+                    size="lg"
+                    target="_blank"
+                    leftIcon={<EmailIcon />}
+                    colorScheme="blue"
                   >
-                    eresearch@qut.edu.au
-                  </Link>
-                </Alert>
+                    Contact Us / Give Feedback <ExternalLinkIcon mx="2px" />
+                  </Button>
+
+                  <Box pb={6}>
+                    <Footer
+                      acknowledgement={
+                        "[QUT acknowledges the Traditional Owners of the lands where QUT now stands.](https://www.qut.edu.au/about/indigenous)"
+                      }
+                      notice={
+                        "TEQSA Provider ID [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) Australian University | CRICOS No. 00213J"
+                      }
+                      shortNotice={
+                        "TEQSA [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) | CRICOS 00213J"
+                      }
+                    />
+                  </Box>
+                </VStack>
               </CardFooter>
-              <Box p={12} pt={6}>
-                <Footer
-                  acknowledgement={
-                    "[QUT acknowledges the Traditional Owners of the lands where QUT now stands.](https://www.qut.edu.au/about/indigenous)"
-                  }
-                  notice={
-                    "TEQSA Provider ID [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) Australian University | CRICOS No. 00213J"
-                  }
-                  shortNotice={
-                    "TEQSA [PRV12079](https://www.teqsa.gov.au/national-register/provider/queensland-university-technology) | CRICOS 00213J"
-                  }
-                />
-              </Box>
             </Card>
           </chakra.main>
         </Box>
