@@ -46,7 +46,7 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
               {convertDateStr(incident?.restored)}
             </Heading>
             <Text>
-              {incident?.service} - {incident?.impact}
+              {incident?.name} - {incident?.impact}
             </Text>
           </Stack>
         ))}
