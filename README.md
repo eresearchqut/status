@@ -30,6 +30,23 @@ https://eresearchqut.github.io/status/
 
 This starter kit comes with the `@storybook/addon-a11y` which is used to check for common accessibility errors in your components. When you run `yarn run storybook`, each story will show detailed explanations with suggested fixes if errors are found.
 
+## Updating Service Detail
+In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated. 
+
+Please make sure the updated information is correct. Services detail is located in [checks.csv](checks.csv). Columns are explained below as a table.
+
+#### Services Data Values Description
+| # | Value Name      | Description                                      | Data Type            | Example Value           |
+|---|-----------------|--------------------------------------------------|----------------------|-------------------------|
+| 1 | Method          | Health check methods (http / port / ...)         | String               | http                    |
+| 2 | Expected Code   | Expected HTTP Status Code (http=200, port=0)     | Number               | 200                     |
+| 3 | Service Name    | The name of the service for display              | String               | rVDI                    |
+| 4 | Service Address | The actual service address (with port if needed) | String (with Number) | https://rvdi.qut.edu.au |
+
+Values are separated by comma `,`. To update a `Service Name`, just go to [checks.csv](checks.csv), and find third column of the service you would like to update.
+
+Do not delete other records, please also maintain the format of the document to avoid issues, each service uses one line.
+
 ## Updating Incidents Records
 There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage.
 
