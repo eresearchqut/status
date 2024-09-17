@@ -105,6 +105,7 @@ const Home: NextPage = () => {
               title={"Operational status"}
               lastUpdated={statusData?.last_updated}
               services={statusData?.services as Array<Service>}
+              maintenances={plannedMaintenanceData?.planned_maintenance}
               filter={ServiceStatus.OK}
             />
           )}
