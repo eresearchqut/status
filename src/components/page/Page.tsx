@@ -10,13 +10,14 @@ import {
   Grid,
   GridItem,
   HeadingProps,
+  HStack,
   useColorModeValue,
   useMultiStyleConfig,
   VStack,
 } from "@chakra-ui/react";
 import { Header, HeaderProps } from "../header";
 import { Footer } from "../footer";
-import { EmailIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { EmailIcon, ExternalLinkIcon, EditIcon } from "@chakra-ui/icons";
 
 export interface PageProps {
   header: HeaderProps;
@@ -67,17 +68,33 @@ export const Page: FunctionComponent<PropsWithChildren<PageProps>> = (
 
               <CardFooter px={12} pt={6}>
                 <VStack spacing={12} align="stretch" width="100%">
-                  <Button
-                    as="a"
-                    href="mailto:eresearch@qut.edu.au"
-                    justifyContent="space-between"
-                    size="lg"
-                    target="_blank"
-                    leftIcon={<EmailIcon />}
-                    colorScheme="blue"
-                  >
-                    Contact Us / Give Feedback <ExternalLinkIcon mx="2px" />
-                  </Button>
+                  <HStack spacing={6} width="100%">
+                    <Button
+                      as="a"
+                      width="100%"
+                      href="https://eresearchqut.atlassian.net/servicedesk/customer/portals"
+                      justifyContent="space-between"
+                      size="lg"
+                      target="_blank"
+                      leftIcon={<EditIcon />}
+                      colorScheme="blue"
+                    >
+                      Report an Outage <ExternalLinkIcon mx="2px" />
+                    </Button>
+
+                    <Button
+                      as="a"
+                      width="100%"
+                      href="mailto:eresearch@qut.edu.au"
+                      justifyContent="space-between"
+                      size="lg"
+                      target="_blank"
+                      leftIcon={<EmailIcon />}
+                      colorScheme="blue"
+                    >
+                      Contact Us / Give Feedback <ExternalLinkIcon mx="2px" />
+                    </Button>
+                  </HStack>
 
                   <Box pb={6}>
                     <Footer
