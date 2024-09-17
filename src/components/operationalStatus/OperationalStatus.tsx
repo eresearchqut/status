@@ -14,6 +14,7 @@ import {
   Heading,
   Stack,
 } from "@chakra-ui/react";
+import { PlannedMaintenanceItem } from "../plannedMaintenance";
 
 export enum ServiceStatus {
   OK = "OK",
@@ -32,17 +33,35 @@ export interface OperationalStatusProps {
   title: string;
   lastUpdated: string;
   services: Service[];
+  maintenances?: PlannedMaintenanceItem[];
   filter?: ServiceStatus;
 }
 
 export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
   title,
   services = [],
+  maintenances = null,
   filter,
 }) => {
   const filteredData = filter
     ? services.filter((service) => service.status === filter)
     : services;
+
+  const isServiceInMaintenanceNow = (service: Service) => {
+    const serviceInMaintenance =
+      maintenances &&
+      maintenances.find(
+        (maintenance: PlannedMaintenanceItem) =>
+          maintenance.service.toLowerCase() === service.name.toLowerCase()
+      );
+
+    if (!serviceInMaintenance) return false;
+
+    const maintenanceFrom = new Date(serviceInMaintenance.date_time_from);
+    const maintenanceTo = new Date(serviceInMaintenance.date_time_to);
+    const currentTime = new Date();
+    return currentTime >= maintenanceFrom && currentTime <= maintenanceTo;
+  };
 
   const hasDisruptedService = services?.some(
     (service: any) => service?.status !== ServiceStatus.OK
@@ -89,33 +108,38 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
             </Tr>
           </Thead>
           <Tbody>
-            {filteredData.map((service: any) => (
-              <Tr key={service?.name}>
-                <Td>{service?.name}</Td>
-                {hasDisruptedService && (
-                  <Td>
-                    {service?.reported != null
-                      ? convertDate(service?.reported)
-                      : "Unknown"}
-                  </Td>
-                )}
-                {hasDisruptedService && (
-                  <Td>
-                    {service?.impact != null ? service?.impact : "Unknown"}
-                  </Td>
-                )}
-                <Td isNumeric>
-                  <Tag
-                    variant="subtle"
-                    colorScheme={service?.status === "OK" ? "green" : "red"}
-                  >
-                    <TagLabel>
-                      {service?.status === "OK" ? "Operational" : "Disrupted"}
-                    </TagLabel>
-                  </Tag>
-                </Td>
-              </Tr>
-            ))}
+            {filteredData.map(
+              (service: any) =>
+                !isServiceInMaintenanceNow(service) && (
+                  <Tr key={service?.name}>
+                    <Td>{service?.name}</Td>
+                    {hasDisruptedService && (
+                      <Td>
+                        {service?.reported != null
+                          ? convertDate(service?.reported)
+                          : "Unknown"}
+                      </Td>
+                    )}
+                    {hasDisruptedService && (
+                      <Td>
+                        {service?.impact != null ? service?.impact : "Unknown"}
+                      </Td>
+                    )}
+                    <Td isNumeric>
+                      <Tag
+                        variant="subtle"
+                        colorScheme={service?.status === "OK" ? "green" : "red"}
+                      >
+                        <TagLabel>
+                          {service?.status === "OK"
+                            ? "Operational"
+                            : "Disrupted"}
+                        </TagLabel>
+                      </Tag>
+                    </Td>
+                  </Tr>
+                )
+            )}
           </Tbody>
         </Table>
       )}
