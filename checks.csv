@@ -3,3 +3,4 @@ http,   200,  rVDI,                   https://rvdi.qut.edu.au
 http,   200,  XNAT,                   https://xnat.qut.edu.au/app/template/Login.vm
 http,   200,  Jupyter Hub,            https://jupyter.eres.qut.edu.au/hub/static/favicon.ico
 port,   0,    HPC / Lyra login node,        lyra.qut.edu.au 22
+port,  0,  RDSS,  rdss.qut.edu.au 445
