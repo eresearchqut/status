@@ -12,6 +12,9 @@ git branch -M main# See https://help.github.com/articles/ignoring-files/ for mor
 /.next/
 /out/
 
+# storybook static
+/storybook-static/
+
 # production
 /build
 
