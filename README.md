@@ -47,8 +47,8 @@ Values are separated by comma `,`. To update a `Service Name`, just go to [check
 
 Do not delete other records, please also maintain the format of the document to avoid issues, each service uses one line.
 
-## Updating Incidents Records
-There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage.
+## Updating Incidents Records - unplanned outages only
+There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage. Note: planned maintenance should not become current incidents or past incidents, they should stay as planned maintenance for the duration and be removed after the planned maintenance is over.
 
 ### Current Incidents
 Data for current incident is from [incidents.csv](incidents.csv). There are two formats accepted for different situations. When you open the file, you will either see an empty file means there are no reported ongoing incidents, and if you see date time, system and impact means a specific system is out of service currently.
