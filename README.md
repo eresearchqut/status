@@ -89,7 +89,7 @@ To update [past_incidents.csv](past_incidents.csv) by adding a past incident his
 After editing, commit your changes, the system will re-build itself and you shall see the updates.
 
 ## Updating Planned Maintenance Events
-When adding planned maintenance events, edit [planned_maintenance.csv](planned_maintenance.csv) and add a new row with the following format (values separated with a comma): `HPC-FS, 2024-01-31T09:00:00+1000, 2024-01-31T12:00:00+1000, Service will be unavailable`.
+When adding planned maintenance events, edit [planned_maintenance.csv](planned_maintenance.csv) and add a new row with the following format (values separated with a comma): `HPC-FS, 2024-01-31T09:00:00+1000, 2024-01-31T12:00:00+1000, Service will be unavailable`. If the planned maintenance event goes on for substantially longer than initially planned due to unforeseen circumstances, just update column 3 (Date & Time To).
 
 #### Planned Maintenance Data Values Descriptions
 | # | Value Name       | Description                                        | Data Type          | Example Value               |
