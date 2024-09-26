@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import {
   Table,
   Thead,
@@ -13,8 +13,10 @@ import {
   AlertTitle,
   Heading,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { PlannedMaintenanceItem } from "../plannedMaintenance";
+import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 
 export enum ServiceStatus {
   OK = "OK",
@@ -43,9 +45,43 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
   maintenances = null,
   filter,
 }) => {
+  type SortKey = keyof Service;
+  type SortDirection = "ascending" | "descending";
+  const [sort, setSort] = useState<{ key: SortKey; direction: SortDirection }>({
+    key: "name",
+    direction: "ascending",
+  });
+
+  const requestSort = (key: SortKey) => {
+    let direction = "ascending" as SortDirection;
+    if (sort.key === key && sort.direction === "ascending") {
+      direction = "descending";
+    }
+    setSort({ key, direction });
+  };
+
   const filteredData = filter
     ? services.filter((service) => service.status === filter)
     : services;
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    let aValue = a[sort.key];
+    let bValue = b[sort.key];
+    if (!aValue || !bValue) return 0;
+
+    if (sort.key === "name") {
+      aValue = aValue.toUpperCase();
+      bValue = bValue.toUpperCase();
+    }
+
+    if (aValue < bValue) {
+      return sort.direction === "ascending" ? -1 : 1;
+    }
+    if (aValue > bValue) {
+      return sort.direction === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
 
   const isServiceInMaintenanceNow = (service: Service) => {
     const serviceInMaintenance =
@@ -101,14 +137,51 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Service</Th>
-              {hasDisruptedService && <Th>Reported</Th>}
-              {hasDisruptedService && <Th>Impact</Th>}
+              <Th>
+                <Flex align="center" onClick={() => requestSort("name")}>
+                  Service
+                  {sort.key === "name" ? (
+                    sort.direction === "ascending" ? (
+                      <ArrowUpIcon boxSize={4} ml={2} />
+                    ) : (
+                      <ArrowDownIcon boxSize={4} ml={2} />
+                    )
+                  ) : null}
+                </Flex>
+              </Th>
+              {hasDisruptedService && (
+                <Th>
+                  <Flex align="center" onClick={() => requestSort("reported")}>
+                    Reported
+                    {sort.key === "reported" ? (
+                      sort.direction === "ascending" ? (
+                        <ArrowUpIcon boxSize={4} ml={2} />
+                      ) : (
+                        <ArrowDownIcon boxSize={4} ml={2} />
+                      )
+                    ) : null}
+                  </Flex>
+                </Th>
+              )}
+              {hasDisruptedService && (
+                <Th>
+                  <Flex align="center" onClick={() => requestSort("impact")}>
+                    Impact
+                    {sort.key === "impact" ? (
+                      sort.direction === "ascending" ? (
+                        <ArrowUpIcon boxSize={4} ml={2} />
+                      ) : (
+                        <ArrowDownIcon boxSize={4} ml={2} />
+                      )
+                    ) : null}
+                  </Flex>
+                </Th>
+              )}
               <Th isNumeric>Status</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {filteredData.map(
+            {sortedData.map(
               (service: any) =>
                 !isServiceInMaintenanceNow(service) && (
                   <Tr key={service?.name}>
