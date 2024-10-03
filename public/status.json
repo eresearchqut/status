@@ -1,10 +1,1 @@
-{
-  "last_updated": "2024-09-04T12:49:47+1000",
-  "services": [
-    { "name": "eResearch Portal", "status": "OK" },
-    { "name": "Jupyter Hub", "status": "OK" },
-    { "name": "Lyra login node / HPC", "status": "OK" },
-    { "name": "rVDI", "status": "OK" },
-    { "name": "XNAT", "status": "OK" }
-  ]
-}
+{"last_updated":"2024-09-26T11:47:31+1000","services":[{"name":"eResearch Portal","status":"OK"},{"name":"HPC / Lyra login node","status":"OK"},{"name":"Jupyter Hub","status":"OK"},{"name":"RDSS","status":"OK"},{"name":"rVDI","status":"OK"},{"name":"XNAT","status":"OK"}]}
