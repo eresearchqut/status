@@ -13,10 +13,9 @@ import {
   AlertTitle,
   Heading,
   Stack,
-  Flex,
 } from "@chakra-ui/react";
 import { PlannedMaintenanceItem } from "../plannedMaintenance";
-import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import { SortableHeader } from "../table";
 
 export enum ServiceStatus {
   OK = "OK",
@@ -137,45 +136,27 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>
-                <Flex align="center" onClick={() => requestSort("name")}>
-                  Service
-                  {sort.key === "name" ? (
-                    sort.direction === "ascending" ? (
-                      <ArrowUpIcon boxSize={4} ml={2} />
-                    ) : (
-                      <ArrowDownIcon boxSize={4} ml={2} />
-                    )
-                  ) : null}
-                </Flex>
-              </Th>
+              <SortableHeader
+                columnName={"Service"}
+                sort={sort}
+                sortName={"name"}
+                onSortChange={(key) => requestSort(key as keyof Service)}
+              />
               {hasDisruptedService && (
-                <Th>
-                  <Flex align="center" onClick={() => requestSort("reported")}>
-                    Reported
-                    {sort.key === "reported" ? (
-                      sort.direction === "ascending" ? (
-                        <ArrowUpIcon boxSize={4} ml={2} />
-                      ) : (
-                        <ArrowDownIcon boxSize={4} ml={2} />
-                      )
-                    ) : null}
-                  </Flex>
-                </Th>
+                <SortableHeader
+                  columnName={"Reported"}
+                  sort={sort}
+                  sortName={"reported"}
+                  onSortChange={(key) => requestSort(key as keyof Service)}
+                />
               )}
               {hasDisruptedService && (
-                <Th>
-                  <Flex align="center" onClick={() => requestSort("impact")}>
-                    Impact
-                    {sort.key === "impact" ? (
-                      sort.direction === "ascending" ? (
-                        <ArrowUpIcon boxSize={4} ml={2} />
-                      ) : (
-                        <ArrowDownIcon boxSize={4} ml={2} />
-                      )
-                    ) : null}
-                  </Flex>
-                </Th>
+                <SortableHeader
+                  columnName={"Impact"}
+                  sort={sort}
+                  sortName={"impact"}
+                  onSortChange={(key) => requestSort(key as keyof Service)}
+                />
               )}
               <Th isNumeric>Status</Th>
             </Tr>
