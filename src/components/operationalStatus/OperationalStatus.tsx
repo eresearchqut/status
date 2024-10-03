@@ -66,7 +66,14 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
   const sortedData = [...filteredData].sort((a, b) => {
     let aValue = a[sort.key];
     let bValue = b[sort.key];
-    if (!aValue || !bValue) return 0;
+    if (aValue == null || bValue == null)
+      return aValue == null
+        ? sort.direction === "ascending"
+          ? 1
+          : -1
+        : sort.direction === "ascending"
+          ? -1
+          : 1;
 
     if (sort.key === "name") {
       aValue = aValue.toUpperCase();
