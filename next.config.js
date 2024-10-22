@@ -13,7 +13,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "frame-ancestors 'self'; default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'self'; media-src 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self'; base-uri 'self';",
+              "frame-ancestors 'self'; default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'self'; media-src 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self'; base-uri 'self';",
           },
           {
             key: "X-Frame-Options",
@@ -25,12 +25,26 @@ const nextConfig = {
           },
           {
             key: "Cache-Control",
-            value:
-              "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=600",
+            value: "must-revalidate, proxy-revalidate, max-age=600",
           },
           {
             key: "Referrer-Policy",
             value: "no-referrer",
+          },
+        ],
+      },
+      // json files
+      {
+        source: "/(.*).json",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value:
+              "frame-ancestors 'none'; default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'self'; media-src 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self'; base-uri 'self';",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache",
           },
         ],
       },
