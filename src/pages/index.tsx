@@ -36,9 +36,13 @@ const Home: NextPage = () => {
   const [plannedMaintenanceData, setPlannedMaintenanceData] =
     useState<PlannedMaintenanceData | null>(null);
 
-  const fetchData = async (dataFilePath: string, setData: any) => {
+  const fetchData = async (
+    dataFilePath: string,
+    signal: AbortSignal,
+    setData: any
+  ) => {
     try {
-      const response = await fetch(dataFilePath);
+      const response = await fetch(dataFilePath, { signal });
       if (!response.ok) {
         throw new Error(`Error fetching data from ${dataFilePath}!`);
       }
@@ -50,22 +54,33 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     // Initial fetch
-    const fetchAllData = async () => {
-      await fetchData("./status.json", setStatusData);
-      await fetchData("./incidents.json", setIncidentData);
-      await fetchData("./planned_maintenance.json", setPlannedMaintenanceData);
+    const fetchAllData = async (signal: AbortSignal) => {
+      await fetchData("./status.json", signal, setStatusData);
+      await fetchData("./incidents.json", signal, setIncidentData);
+      await fetchData(
+        "./planned_maintenance.json",
+        signal,
+        setPlannedMaintenanceData
+      );
     };
 
-    fetchAllData();
+    fetchAllData(signal).then();
 
     // Poll every 60 seconds
     const intervalId = setInterval(async () => {
-      await fetchData("./status.json", setStatusData);
+      await fetchData("./status.json", signal, setStatusData);
     }, 60000);
 
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
+    return () => {
+      // Clean up interval on component unmount
+      clearInterval(intervalId);
+      // Abort the fetch request if the component unmounts
+      controller.abort();
+    };
   }, []);
 
   return (
