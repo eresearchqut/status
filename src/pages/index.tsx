@@ -44,12 +44,22 @@ const Home: NextPage = () => {
     try {
       const response = await fetch(dataFilePath, { signal });
       if (!response.ok) {
-        throw new Error(`Error fetching data from ${dataFilePath}!`);
+        throw new Error(
+          `Error fetching data from ${dataFilePath}: ${response.status}`
+        );
       }
       const data = await response.json();
       setData(data);
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          console.log(`Fetch aborted for ${dataFilePath}`);
+        } else {
+          console.error("Error: ", error);
+        }
+      } else {
+        console.error("Unknown error occurred: ", error);
+      }
     }
   };
 
@@ -58,17 +68,17 @@ const Home: NextPage = () => {
     const signal = controller.signal;
 
     // Initial fetch
-    const fetchAllData = async (signal: AbortSignal) => {
-      await fetchData("./status.json", signal, setStatusData);
-      await fetchData("./incidents.json", signal, setIncidentData);
-      await fetchData(
+    const fetchAllData = (signal: AbortSignal) => {
+      fetchData("./status.json", signal, setStatusData);
+      fetchData("./incidents.json", signal, setIncidentData);
+      fetchData(
         "./planned_maintenance.json",
         signal,
         setPlannedMaintenanceData
       );
     };
 
-    fetchAllData(signal).then();
+    fetchAllData(signal);
 
     // Poll every 60 seconds
     const intervalId = setInterval(async () => {
