@@ -81,8 +81,8 @@ const Home: NextPage = () => {
     fetchAllData(signal);
 
     // Poll every 60 seconds
-    const intervalId = setInterval(async () => {
-      await fetchData("./status.json", signal, setStatusData);
+    const intervalId = setInterval(() => {
+      fetchData("./status.json", signal, setStatusData);
     }, 60000);
 
     return () => {
