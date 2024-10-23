@@ -36,36 +36,61 @@ const Home: NextPage = () => {
   const [plannedMaintenanceData, setPlannedMaintenanceData] =
     useState<PlannedMaintenanceData | null>(null);
 
-  const fetchData = async (dataFilePath: string, setData: any) => {
+  const fetchData = async (
+    dataFilePath: string,
+    signal: AbortSignal,
+    setData: any
+  ) => {
     try {
-      const response = await fetch(dataFilePath);
+      const response = await fetch(dataFilePath, { signal });
       if (!response.ok) {
-        throw new Error(`Error fetching data from ${dataFilePath}!`);
+        throw new Error(
+          `Error fetching data from ${dataFilePath}: ${response.status}`
+        );
       }
       const data = await response.json();
       setData(data);
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          console.log(`Fetch aborted for ${dataFilePath}`);
+        } else {
+          console.error("Error: ", error);
+        }
+      } else {
+        console.error("Unknown error occurred: ", error);
+      }
     }
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     // Initial fetch
-    const fetchAllData = async () => {
-      await fetchData("./status.json", setStatusData);
-      await fetchData("./incidents.json", setIncidentData);
-      await fetchData("./planned_maintenance.json", setPlannedMaintenanceData);
+    const fetchAllData = (signal: AbortSignal) => {
+      fetchData("./status.json", signal, setStatusData);
+      fetchData("./incidents.json", signal, setIncidentData);
+      fetchData(
+        "./planned_maintenance.json",
+        signal,
+        setPlannedMaintenanceData
+      );
     };
 
-    fetchAllData();
+    fetchAllData(signal);
 
     // Poll every 60 seconds
-    const intervalId = setInterval(async () => {
-      await fetchData("./status.json", setStatusData);
+    const intervalId = setInterval(() => {
+      fetchData("./status.json", signal, setStatusData);
     }, 60000);
 
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
+    return () => {
+      // Clean up interval on component unmount
+      clearInterval(intervalId);
+      // Abort the fetch request if the component unmounts
+      controller.abort();
+    };
   }, []);
 
   return (
