@@ -68,8 +68,9 @@ Scripts are either executed automatically when the build action is triggered by 
 
 ### List of scripts
 - [incidents.sh](./incidents.sh) - Updates current and past incidents. Executes when either [incidents.csv](./incidents.csv) or [past_incidents.csv](./past_incidents.csv) is updated.
-- [status.sh](./status.sh) - Updates service list in operational status component, detects if service is down by using basic http or port. Executes every 60 seconds.
+- [status.sh](./status.sh) - Updates service list in operational status, detects if service is down by using basic http or port. Executes every 60 seconds.
 - [planned_maintenance.sh](./planned_maintenance.sh) - Updates planned maintenances component. Executes when [planned_maintenance.csv](./planned_maintenance.csv) is updated.
+- [startup.sh](./startup.sh) - Executes when new build action is triggered by commit and push. Calls 3 scripts above and setup a 60 seconds update interval for [status.sh](./status.sh).
 
 ## Updating Service Detail
 In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated. 
