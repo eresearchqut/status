@@ -2,6 +2,7 @@
 This Service Status Page provides real-time updates and historical data about the operational status of services and systems within the project. It is designed to ensure transparency and enhance user trust by displaying the current status of services, maintenance schedules, and incident reports.
 
 ## Features & Components
+
 ### Features
 - Service Monitoring: Displays the real-time status (operational or disrupted) of each service.
 - Incident Reporting: Lists active and resolved incidents with detailed information.
@@ -10,24 +11,25 @@ This Service Status Page provides real-time updates and historical data about th
 - Feedback / Contact Us: For users to provide feedback or contact eResearch Team if any questions.
 
 ### Components
-- Operational status - Displays operational services, if all services are operational, you will see `All systems are operational`
+
+- Operational status - Displays operational services, if all services are operational, you will see a green banner `All systems are operational`.
   
   ![image](https://github.com/user-attachments/assets/d4f824bd-410c-4ff7-82c5-47d47934d06e)
 
-- Service disruptions - Displays disrupted services with reported time and impact, only shows when there is at least one disrupted services
+- Service disruptions - Displays disrupted services with reported time and impact, only shows when there is at least one disrupted services.
 
   ![image](https://github.com/user-attachments/assets/d06ea209-c70f-4ab3-8b80-febebbd2e242)
 
-- Planned maintenances - Displays scheduled maintenances and relevant services that will be affected in the next two weeks
+- Planned maintenances - Displays scheduled maintenances and relevant services that will be affected in the next two weeks.
 
   ![image](https://github.com/user-attachments/assets/0384065b-2669-49e6-831d-2e1031e0367e)
 
-- Past incidents - Displays past incidents and affected services in the past 6 months
+- Past incidents - Displays all past incidents and affected services.
 
   ![image](https://github.com/user-attachments/assets/e9123fab-ad2c-49de-bd02-f84818076d44)
 
-
 ## Host Location
+
 [https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/) 
 
 (Requires VPN if you are connected from external)
@@ -60,10 +62,14 @@ This starter kit comes with the `@storybook/addon-a11y` which is used to check f
 
 
 ## Automated Scripts
-It is always good to understand how the information are updated and displayed, reduce the possibility of causing issues or errors when [updating service detail](#updating-service-detail).
+It is always beneficial to understand how the information are updated and displayed, reduce the possibility of causing issues or errors when [updating service detail](#updating-service-detail).
+
+Scripts are either executed automatically when the build action is triggered by commit and push, or time interval based.
 
 ### List of scripts
-
+- [incidents.sh](./incidents.sh) - Updates current and past incidents. Executes when either [incidents.csv](./incidents.csv) or [past_incidents.csv](./past_incidents.csv) is updated.
+- [status.sh](./status.sh) - Updates service list in operational status component, detects if service is down by using basic http or port. Executes every 60 seconds.
+- [planned_maintenance.sh](./planned_maintenance.sh) - Updates planned maintenances component. Executes when [planned_maintenance.csv](./planned_maintenance.csv) is updated.
 
 ## Updating Service Detail
 In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated. 
