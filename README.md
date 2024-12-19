@@ -1,19 +1,36 @@
 # eResearch Service Status Page
 This Service Status Page provides real-time updates and historical data about the operational status of services and systems within the project. It is designed to ensure transparency and enhance user trust by displaying the current status of services, maintenance schedules, and incident reports.
 
-## Host Location
-[https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/) (Requires VPN if you are connected from external)
-
 ## Features & Components
 ### Features
 - Service Monitoring: Displays the real-time status (operational or disrupted) of each service.
 - Incident Reporting: Lists active and resolved incidents with detailed information.
-- Maintenance Notifications: Highlights scheduled maintenance windows and their expected impact.
+- Maintenances Notifications: Highlights scheduled maintenance windows and their expected impact.
 - Historical Data: Tracks past incidents and maintenance for audit and review purposes.
 - Feedback / Contact Us: For users to provide feedback or contact eResearch Team if any questions.
 
 ### Components
+- Operational status - Displays operational services, if all services are operational, you will see `All systems are operational`
+  
+  ![image](https://github.com/user-attachments/assets/d4f824bd-410c-4ff7-82c5-47d47934d06e)
 
+- Service disruptions - Displays disrupted services with reported time and impact, only shows when there is at least one disrupted services
+
+  ![image](https://github.com/user-attachments/assets/d06ea209-c70f-4ab3-8b80-febebbd2e242)
+
+- Planned maintenances - Displays scheduled maintenances and relevant services that will be affected in the next two weeks
+
+  ![image](https://github.com/user-attachments/assets/0384065b-2669-49e6-831d-2e1031e0367e)
+
+- Past incidents - Displays past incidents and affected services in the past 6 months
+
+  ![image](https://github.com/user-attachments/assets/e9123fab-ad2c-49de-bd02-f84818076d44)
+
+
+## Host Location
+[https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/) 
+
+(Requires VPN if you are connected from external)
 
 ## Stack
 
