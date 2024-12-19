@@ -1,8 +1,19 @@
-# eResearch Team Charter
+# eResearch Service Status Page
+This Service Status Page provides real-time updates and historical data about the operational status of services and systems within the project. It is designed to ensure transparency and enhance user trust by displaying the current status of services, maintenance schedules, and incident reports.
 
-## Overview
+## Host Location
+[https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/) (Requires VPN if you are connected from external)
 
-https://eresearchqut.github.io/status/
+## Features & Components
+### Features
+- Service Monitoring: Displays the real-time status (operational or disrupted) of each service.
+- Incident Reporting: Lists active and resolved incidents with detailed information.
+- Maintenance Notifications: Highlights scheduled maintenance windows and their expected impact.
+- Historical Data: Tracks past incidents and maintenance for audit and review purposes.
+- Feedback / Contact Us: For users to provide feedback or contact eResearch Team if any questions.
+
+### Components
+
 
 ## Stack
 
@@ -29,6 +40,13 @@ https://eresearchqut.github.io/status/
 ### Storybook's Accessibility testing
 
 This starter kit comes with the `@storybook/addon-a11y` which is used to check for common accessibility errors in your components. When you run `yarn run storybook`, each story will show detailed explanations with suggested fixes if errors are found.
+
+
+## Automated Scripts
+It is always good to understand how the information are updated and displayed, reduce the possibility of causing issues or errors when [updating service detail](#updating-service-detail).
+
+### List of scripts
+
 
 ## Updating Service Detail
 In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated. 
