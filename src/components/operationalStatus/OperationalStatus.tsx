@@ -89,18 +89,27 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
     return 0;
   });
 
-  const isServiceInMaintenanceNow = (service: Service) => {
-    const serviceInMaintenance =
-      maintenances &&
-      maintenances.find(
-        (maintenance: PlannedMaintenanceItem) =>
-          maintenance.service.toLowerCase() === service.name.toLowerCase()
-      );
+  const isServiceInMaintenanceNow = (service: Service): boolean => {
+    if (!maintenances || maintenances.length === 0) {
+      return false;
+    }
 
-    if (!serviceInMaintenance) return false;
+    const serviceInMaintenance = maintenances.find(
+      (maintenance: PlannedMaintenanceItem) =>
+        maintenance.service.toLowerCase() === service.name.toLowerCase()
+    );
+
+    if (!serviceInMaintenance) {
+      return false;
+    }
 
     const maintenanceFrom = new Date(serviceInMaintenance.date_time_from);
     const maintenanceTo = new Date(serviceInMaintenance.date_time_to);
+
+    if (isNaN(maintenanceFrom.getTime()) || isNaN(maintenanceTo.getTime())) {
+      return false;
+    }
+
     const currentTime = new Date();
     return currentTime >= maintenanceFrom && currentTime <= maintenanceTo;
   };
