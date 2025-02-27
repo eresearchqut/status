@@ -13,6 +13,7 @@ import { PastIncidents, Incident } from "../components/pastIncidents";
 import { ServiceStatus } from "../components/operationalStatus/OperationalStatus";
 
 import { useEffect, useState } from "react";
+import { isEmptyObject } from "@chakra-ui/utils";
 
 interface StatusData {
   last_updated: string;
@@ -32,15 +33,15 @@ interface PlannedMaintenanceData {
 
 const Home: NextPage = () => {
   const [statusData, setStatusData] = useState<StatusData | null>(null);
-  const [incidentsData, setIncidentData] = useState<IncidentData | null>(null);
+  const [incidentsData, setIncidentsData] = useState<IncidentData | null>(null);
   const [plannedMaintenanceData, setPlannedMaintenanceData] =
     useState<PlannedMaintenanceData | null>(null);
+  const [allIncidents, setAllIncidents] = useState<IncidentData | null>(null);
+  const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
+  const controller = new AbortController();
+  const signal = controller.signal;
 
-  const fetchData = async (
-    dataFilePath: string,
-    signal: AbortSignal,
-    setData: any
-  ) => {
+  const fetchData = async (dataFilePath: string, signal: AbortSignal) => {
     try {
       const response = await fetch(dataFilePath, { signal });
       if (!response.ok) {
@@ -48,8 +49,7 @@ const Home: NextPage = () => {
           `Error fetching data from ${dataFilePath}: ${response.status}`
         );
       }
-      const data = await response.json();
-      setData(data);
+      return await response.json();
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.name === "AbortError") {
@@ -60,29 +60,77 @@ const Home: NextPage = () => {
       } else {
         console.error("Unknown error occurred: ", error);
       }
+      return null;
     }
   };
 
+  const setStatusAndAllIncidentsData = (
+    status: StatusData,
+    incidents: IncidentData | null
+  ) => {
+    const failedServices =
+      status.services?.filter(
+        (service: Service) => service.status === "FAILURE"
+      ) ?? [];
+    setStatusData({
+      ...status,
+      services:
+        status.services.filter(
+          (service: Service) =>
+            !(incidents?.current_incidents ?? [])
+              .map((incident: Service) => incident.name)
+              .includes(service.name)
+        ) ?? [],
+    });
+    setAllIncidents(
+      incidents
+        ? {
+            ...incidents,
+            current_incidents: [
+              ...failedServices,
+              ...incidents?.current_incidents,
+            ],
+          }
+        : {
+            last_updated: status.last_updated,
+            current_incidents: failedServices,
+            past_incidents: [],
+          }
+    );
+  };
+
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
     // Initial fetch
-    const fetchAllData = (signal: AbortSignal) => {
-      fetchData("./status.json", signal, setStatusData);
-      fetchData("./incidents.json", signal, setIncidentData);
-      fetchData(
-        "./planned_maintenance.json",
-        signal,
-        setPlannedMaintenanceData
+    const fetchAllData = (signal: AbortSignal) =>
+      Promise.all(
+        ["status", "incidents", "planned_maintenance"].map((fileName) =>
+          fetchData(`./${fileName}.json`, signal).then((fetchedData) => {
+            if (fetchedData) {
+              return { [fileName]: fetchedData };
+            }
+          })
+        )
+      ).then((result) =>
+        result.reduce((acc, current) => ({ ...acc, ...current }), {})
       );
-    };
 
-    fetchAllData(signal);
+    fetchAllData(signal).then((data) => {
+      if (data && !isEmptyObject(data)) {
+        setPlannedMaintenanceData(data.planned_maintenance);
+        setIncidentsData(data.incidents);
+        setStatusAndAllIncidentsData(data.status, data.incidents);
+      }
+      setIsInitialDataLoaded(true);
+    });
+  }, []);
 
+  useEffect(() => {
+    if (!isInitialDataLoaded) return;
     // Poll every 60 seconds
     const intervalId = setInterval(() => {
-      fetchData("./status.json", signal, setStatusData);
+      fetchData("./status.json", signal).then((data) => {
+        setStatusAndAllIncidentsData(data, incidentsData);
+      });
     }, 60000);
 
     return () => {
@@ -91,7 +139,7 @@ const Home: NextPage = () => {
       // Abort the fetch request if the component unmounts
       controller.abort();
     };
-  }, []);
+  }, [isInitialDataLoaded, incidentsData]);
 
   return (
     <>
@@ -109,19 +157,11 @@ const Home: NextPage = () => {
                 plannedMaintenances={plannedMaintenanceData.planned_maintenance}
               />
             )}
-          {incidentsData && incidentsData?.current_incidents?.length > 0 && (
+          {allIncidents && allIncidents?.current_incidents?.length > 0 && (
             <OperationalStatus
               title={"Service disruptions"}
-              lastUpdated={incidentsData?.last_updated}
-              services={incidentsData.current_incidents}
-              filter={ServiceStatus.FAILURE}
-            />
-          )}
-          {statusData && statusData?.services?.length > 0 && (
-            <OperationalStatus
-              title={"Service disruptions"}
-              lastUpdated={statusData?.last_updated}
-              services={statusData.services as Array<Service>}
+              lastUpdated={allIncidents?.last_updated}
+              services={allIncidents.current_incidents}
               filter={ServiceStatus.FAILURE}
             />
           )}
