@@ -41,7 +41,7 @@ export const PastIncidents: FunctionComponent<PastIncidentsProps> = ({
       <Stack spacing={2} divider={<StackDivider borderColor="gray.200" />}>
         {incidents.map((incident: any, index: number) => (
           <Stack spacing={2} key={index}>
-            <Heading as="h4" fontSize="2xl">
+            <Heading as="h4" fontSize="lg">
               {convertDateStr(incident?.reported)} -{" "}
               {convertDateStr(incident?.restored)}
             </Heading>

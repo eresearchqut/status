@@ -89,6 +89,18 @@ Values are separated by comma `,`. To update a `Service Name`, just go to [check
 
 Do not delete other records, please also maintain the format of the document to avoid issues, each service uses one line.
 
+#### Services Under Monitoring
+| # | Service Name     |
+|---|------------------|
+| 1 | eResearch Portal |
+| 2 | rVDI             |
+| 3 | XNAT             |
+| 4 | Jupyter Hub      |
+| 5 | HPC Lyra         |
+| 6 | HPC Aqua         |
+| 7 | HPC-FS           |
+| 8 | RDSS             |
+
 ## Updating Incidents Records - unplanned outages only
 There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage. Note: planned maintenance should not become current incidents or past incidents, they should stay as planned maintenance for the duration and be removed after the planned maintenance is over.
 
@@ -97,7 +109,8 @@ Data for current incident is from [incidents.csv](incidents.csv). There are two 
 
 To update [incidents.csv](incidents.csv), In case any incident happens, remove the line "No ongoing incidents" and replace with the following format (values separated with a comma): 
 
-`PBS Server, PBS service disrupted, 2024-07-02T15:53:42+1000`. 
+`eResearch Portal, eResearch Portal disrupted, 2024-07-02T15:53:42+1000`. 
+> **CAUTION:** To ensure accurate incident tracking, it is important that incident names align with the names of associated services. [Services Under Monitoring](#services-under-monitoring)
 
 #### Current Incidents Data Values Descriptions
 | # | Value Name   | Description                            | Data Type          | Example Value            |
