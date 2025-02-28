@@ -45,9 +45,10 @@ const Home: NextPage = () => {
     try {
       const response = await fetch(dataFilePath, { signal });
       if (!response.ok) {
-        throw new Error(
+        console.error(
           `Error fetching data from ${dataFilePath}: ${response.status}`
         );
+        return null;
       }
       return await response.json();
     } catch (error: unknown) {
@@ -68,19 +69,19 @@ const Home: NextPage = () => {
     status: StatusData,
     incidents: IncidentData | null
   ) => {
-    const failedServices =
-      status.services?.filter(
-        (service: Service) => service.status === "FAILURE"
+    const nonIncidentServices =
+      status.services.filter(
+        (service: Service) =>
+          !(incidents?.current_incidents ?? [])
+            .map((incident: Service) => incident.name)
+            .includes(service.name)
       ) ?? [];
+    const failedServices = nonIncidentServices.filter(
+      (service: Service) => service.status === "FAILURE"
+    );
     setStatusData({
       ...status,
-      services:
-        status.services.filter(
-          (service: Service) =>
-            !(incidents?.current_incidents ?? [])
-              .map((incident: Service) => incident.name)
-              .includes(service.name)
-        ) ?? [],
+      services: nonIncidentServices,
     });
     setAllIncidents(
       incidents
@@ -105,9 +106,7 @@ const Home: NextPage = () => {
       Promise.all(
         ["status", "incidents", "planned_maintenance"].map((fileName) =>
           fetchData(`./${fileName}.json`, signal).then((fetchedData) => {
-            if (fetchedData) {
-              return { [fileName]: fetchedData };
-            }
+            return { [fileName]: fetchedData ?? {} };
           })
         )
       ).then((result) =>

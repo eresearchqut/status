@@ -109,8 +109,6 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
     (service: any) => service?.status !== ServiceStatus.OK
   );
 
-  const noDisruptedService = !hasDisruptedService;
-
   const convertDate = (isoDate: string) =>
     `${new Date(isoDate).toLocaleTimeString("en-AU")} ${new Date(isoDate).toLocaleDateString("en-AU")}`;
 
@@ -127,7 +125,7 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
           </AlertTitle>
         </Alert>
       )}
-      {noDisruptedService && (
+      {!hasDisruptedService && (
         <Alert status="success" variant="solid">
           <AlertIcon />
           <AlertTitle>All systems are operational</AlertTitle>
@@ -149,21 +147,21 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
                 sortName={"name"}
                 onSortChange={(key) => requestSort(key as keyof Service)}
               />
-              {hasDisruptedService && (
-                <SortableHeader
-                  columnName={"Reported"}
-                  sort={sort}
-                  sortName={"reported"}
-                  onSortChange={(key) => requestSort(key as keyof Service)}
-                />
-              )}
-              {hasDisruptedService && (
-                <SortableHeader
-                  columnName={"Impact"}
-                  sort={sort}
-                  sortName={"impact"}
-                  onSortChange={(key) => requestSort(key as keyof Service)}
-                />
+              {filter === ServiceStatus.FAILURE && (
+                <>
+                  <SortableHeader
+                    columnName={"Reported"}
+                    sort={sort}
+                    sortName={"reported"}
+                    onSortChange={(key) => requestSort(key as keyof Service)}
+                  />
+                  <SortableHeader
+                    columnName={"Impact"}
+                    sort={sort}
+                    sortName={"impact"}
+                    onSortChange={(key) => requestSort(key as keyof Service)}
+                  />
+                </>
               )}
               <Th isNumeric>Status</Th>
             </Tr>
@@ -174,17 +172,19 @@ export const OperationalStatus: FunctionComponent<OperationalStatusProps> = ({
                 !isServiceInMaintenanceNow(service) && (
                   <Tr key={service?.name}>
                     <Td>{service?.name}</Td>
-                    {hasDisruptedService && (
-                      <Td>
-                        {service?.reported != null
-                          ? convertDate(service?.reported)
-                          : "Unknown"}
-                      </Td>
-                    )}
-                    {hasDisruptedService && (
-                      <Td>
-                        {service?.impact != null ? service?.impact : "Unknown"}
-                      </Td>
+                    {filter === ServiceStatus.FAILURE && (
+                      <>
+                        <Td>
+                          {service?.reported != null
+                            ? convertDate(service?.reported)
+                            : "Unknown"}
+                        </Td>
+                        <Td>
+                          {service?.impact != null
+                            ? service?.impact
+                            : "Unknown"}
+                        </Td>
+                      </>
                     )}
                     <Td isNumeric>
                       <Tag
