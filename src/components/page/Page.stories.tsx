@@ -26,10 +26,6 @@ const data = {
       error: "404",
     },
     {
-      name: "Lyra login node",
-      status: ServiceStatus.OK,
-    },
-    {
       name: "XNAT",
       status: ServiceStatus.OK,
     },

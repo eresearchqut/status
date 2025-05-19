@@ -32,10 +32,6 @@ Default.args = {
       status: ServiceStatus.FAILURE,
     },
     {
-      name: "Lyra login node",
-      status: ServiceStatus.OK,
-    },
-    {
       name: "XNAT",
       status: ServiceStatus.OK,
     },
