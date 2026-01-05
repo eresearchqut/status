@@ -4,7 +4,7 @@ services:
       context: ./
       args:
         - UMAMI_URL=${UMAMI_URL:-http://localhost:3000}
-        - UMAMI_ID=${UMAMI_ID:-status}
+        - UMAMI_ID=${UMAMI_ID:-8c4453a6-4c48-4889-9e89-f3b4f13753bb}
     ports:
       - "8080:8080"
   umami:
@@ -24,6 +24,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    profiles:
+      - analytics
   db:
     image: postgres:15-alpine
     environment:
@@ -38,6 +40,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    profiles:
+      - analytics
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -63,12 +67,18 @@ services:
         condition: service_healthy
       umami:
         condition: service_healthy
+    profiles:
+      - analytics
   flyway:
     image: flyway/flyway
-    command: -url=jdbc:postgresql://${POSTGRES_HOST:-db}:5432/${POSTGRES_DB:-umami} -schemas=public -user=${POSTGRES_USER:-umami} -password=${POSTGRES_PASSWORD:-umami} -connectRetries=60 migrate
+    environment:
+      - FLYWAY_BASELINE_ON_MIGRATE=true
+    command: -url=jdbc:postgresql://${POSTGRES_HOST:-db}:5432/${POSTGRES_DB:-umami} -schemas=public -user=${POSTGRES_USER:-umami} -password=${POSTGRES_PASSWORD:-umami} -connectRetries=60 -baselineVersion=1.0 migrate
     volumes:
-      - ./data/sql:/flyway/sql
+      - .flyway:/flyway/sql
     depends_on:
       - pgadmin
+    profiles:
+      - analytics
 volumes:
   umami-db-data:
