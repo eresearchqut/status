@@ -1944,6 +1944,11 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
+"@danielgtmn/umami-react@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@danielgtmn/umami-react/-/umami-react-1.1.2.tgz#98d39ef6d269b0f14495ec0021903ec51a68ce58"
+  integrity sha512-vnaX9inmWO47yosuUjUCx2sHsTmVZS3niLIqQJxqNZ28ZNv8QKAUt/MESWGaJzCopjJOZMTRqIcuRgUVYIcOdw==
+
 "@discoveryjs/json-ext@^0.5.3":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"

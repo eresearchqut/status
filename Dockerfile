@@ -26,6 +26,10 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+ARG UMAMI_URL
+ARG UMAMI_ID
+ENV NEXT_PUBLIC_UMAMI_URL=$UMAMI_URL
+ENV NEXT_PUBLIC_UMAMI_ID=$UMAMI_ID
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \

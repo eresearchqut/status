@@ -3,15 +3,20 @@ import { theme } from "../theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import "@fontsource/oxygen";
 import "@fontsource-variable/asap";
+import UmamiAnalytics from "@danielgtmn/umami-react";
 
-// you can extend the theme and add custom colors, font styles, etc.
-
-function MyApp({ Component, pageProps }: AppProps) {
+function StatusApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+      <UmamiAnalytics
+        url={process.env.NEXT_PUBLIC_UMAMI_URL}
+        websiteId={process.env.NEXT_PUBLIC_UMAMI_ID}
+      />
+    </>
   );
 }
 
-export default MyApp;
+export default StatusApp;

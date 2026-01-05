@@ -1,6 +1,74 @@
-version: "3.9"
 services:
   status:
-    build: ./
+    build:
+      context: ./
+      args:
+        - UMAMI_URL=${UMAMI_URL:-http://localhost:3000}
+        - UMAMI_ID=${UMAMI_ID:-status}
     ports:
       - "8080:8080"
+  umami:
+    image: ghcr.io/umami-software/umami:latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-umami}:${POSTGRES_PASSWORD:-umami}@db:5432/${POSTGRES_DB:-umami}
+      APP_SECRET: replace-me-with-a-random-string
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-umami}
+      POSTGRES_USER: ${POSTGRES_USER:-umami}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-umami}
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@pgadmin.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-password}
+      - POSTGRES_HOST=${POSTGRES_HOSTNAME:-db}
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-umami}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-umami}
+      - POSTGRES_DB=${POSTGRES_DB:-umami}
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=${PGADMIN_CONFIG_CONSOLE_LOG_LEVEL:-10}
+      - GUNICORN_ACCESS_LOGFILE=${GUNICORN_ACCESS_LOGFILE:-None}
+    ports:
+      - ${PGADMIN_PORT:-5433}:80
+    volumes:
+      - ./pgadmin-entry.sh:/entrypoint_custom.sh
+    entrypoint: /entrypoint_custom.sh
+    user: root
+    depends_on:
+      db:
+        condition: service_healthy
+      umami:
+        condition: service_healthy
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://${POSTGRES_HOST:-db}:5432/${POSTGRES_DB:-umami} -schemas=public -user=${POSTGRES_USER:-umami} -password=${POSTGRES_PASSWORD:-umami} -connectRetries=60 migrate
+    volumes:
+      - ./data/sql:/flyway/sql
+    depends_on:
+      - pgadmin
+volumes:
+  umami-db-data:
