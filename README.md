@@ -48,6 +48,27 @@ This Service Status Page provides real-time updates and historical data about th
 
 - `yarn install` - Install the node dependencies.
 
+## Run with Docker Compose
+
+You can run the application locally using Docker Compose. The compose file supports an optional "analytics" profile that brings up Umami analytics, PostgreSQL, and pgAdmin alongside the status app.
+
+Prerequisites:
+- Docker and Docker Compose v2
+
+Environment (optional):
+- You may create a `.env` file in the project root to override defaults used by `docker-compose.yml` (e.g. `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `PGADMIN_PORT`, `UMAMI_URL`, `UMAMI_ID`). If not provided, sensible defaults are used.
+
+Option A — Status app only:
+- Start: `docker compose up --build`
+- Open: http://localhost:8080
+
+Option B — Status app with analytics stack (Umami + Postgres + pgAdmin):
+- Start: `docker compose --profile analytics up --build`
+- Status app: http://localhost:8080
+- Umami: http://localhost:3000 Default credentials admin, umami
+
+To stop containers, press Ctrl+C in the terminal or run `docker compose down` (add `--volumes` to remove the Postgres volume).
+
 ## Commands
 
 - `yarn run dev` - Starts the development server.

@@ -42,6 +42,7 @@
   "dependencies": {
     "@chakra-ui/react": "2.8.2",
     "@chakra-ui/icons": "^2.1.1",
+    "@danielgtmn/umami-react": "^1.1.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@fontsource-variable/asap": "^5.0.21",

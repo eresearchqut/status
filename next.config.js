@@ -13,7 +13,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "frame-ancestors 'self'; default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'self'; media-src 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'none';",
+              `frame-ancestors 'self'; default-src 'self'; script-src 'self'${process.env.UMAMI_URL ? ` ${process.env.UMAMI_URL}` : ''} 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'self'; media-src 'self'; worker-src 'self'; child-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'none';`,
           },
           {
             key: "X-Frame-Options",

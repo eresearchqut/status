@@ -1,6 +1,78 @@
-version: "3.9"
 services:
   status:
-    build: ./
+    build:
+      context: ./
+      args:
+        - UMAMI_URL=${UMAMI_URL:-http://localhost:3000}
+        - UMAMI_ID=${UMAMI_ID:-8c4453a6-4c48-4889-9e89-f3b4f13753bb}
     ports:
       - "8080:8080"
+  umami:
+    image: ghcr.io/umami-software/umami:latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-umami}:${POSTGRES_PASSWORD:-umami}@db:5432/${POSTGRES_DB:-umami}
+      APP_SECRET: replace-me-with-a-random-string
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - analytics
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-umami}
+      POSTGRES_USER: ${POSTGRES_USER:-umami}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-umami}
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - analytics
+  umami-init:
+    image: node:24-alpine
+    environment:
+      - UMAMI_URL=http://umami:3000
+      - UMAMI_USERNAME=admin
+      - UMAMI_PASSWORD=umami
+      - UMAMI_WEBSITE_ID=${UMAMI_ID:-8c4453a6-4c48-4889-9e89-f3b4f13753bb}
+    command: >-
+      node -e "
+        const { UMAMI_URL, UMAMI_USERNAME, UMAMI_PASSWORD, UMAMI_WEBSITE_ID } = process.env;
+        fetch(UMAMI_URL + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: UMAMI_USERNAME, password: UMAMI_PASSWORD }),
+        })
+          .then(r => r.json())
+          .then(({ token }) => {
+            const headers = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token };
+            return fetch(UMAMI_URL + '/api/websites/' + UMAMI_WEBSITE_ID, { headers })
+              .then(r => r.ok ? r.json() : fetch(UMAMI_URL + '/api/websites', {
+                method: 'POST', headers,
+                body: JSON.stringify({ id: UMAMI_WEBSITE_ID, name: 'Status', domain: 'localhost:8080' }),
+              }).then(r => r.json()));
+          })
+          .then(console.log);
+      "
+    depends_on:
+      umami:
+        condition: service_healthy
+    profiles:
+      - analytics
+    restart: "no"
+volumes:
+  umami-db-data:
