@@ -51,18 +51,21 @@ services:
       - UMAMI_WEBSITE_ID=${UMAMI_ID:-8c4453a6-4c48-4889-9e89-f3b4f13753bb}
     command: >-
       node -e "
-        fetch(process.env.UMAMI_URL + '/api/auth/login', {
+        const { UMAMI_URL, UMAMI_USERNAME, UMAMI_PASSWORD, UMAMI_WEBSITE_ID } = process.env;
+        fetch(UMAMI_URL + '/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: process.env.UMAMI_USERNAME, password: process.env.UMAMI_PASSWORD }),
+          body: JSON.stringify({ username: UMAMI_USERNAME, password: UMAMI_PASSWORD }),
         })
           .then(r => r.json())
-          .then(({ token }) => fetch(process.env.UMAMI_URL + '/api/websites', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-            body: JSON.stringify({ id: process.env.UMAMI_WEBSITE_ID, name: 'Status', domain: 'localhost:8080' }),
-          }))
-          .then(r => r.json())
+          .then(({ token }) => {
+            const headers = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token };
+            return fetch(UMAMI_URL + '/api/websites/' + UMAMI_WEBSITE_ID, { headers })
+              .then(r => r.ok ? r.json() : fetch(UMAMI_URL + '/api/websites', {
+                method: 'POST', headers,
+                body: JSON.stringify({ id: UMAMI_WEBSITE_ID, name: 'Status', domain: 'localhost:8080' }),
+              }).then(r => r.json()));
+          })
           .then(console.log);
       "
     depends_on:
