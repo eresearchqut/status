@@ -66,7 +66,6 @@ Option B — Status app with analytics stack (Umami + Postgres + pgAdmin):
 - Start: `docker compose --profile analytics up --build`
 - Status app: http://localhost:8080
 - Umami: http://localhost:3000 Default credentials admin, umami
-- pgAdmin: http://localhost:5433 (defaults: email `admin@pgadmin.com`, password `password` — configurable via `.env`)
 
 To stop containers, press Ctrl+C in the terminal or run `docker compose down` (add `--volumes` to remove the Postgres volume).
 
