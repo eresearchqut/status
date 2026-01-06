@@ -42,43 +42,34 @@ services:
       retries: 5
     profiles:
       - analytics
-  pgadmin:
-    image: dpage/pgadmin4
+  umami-init:
+    image: node:24-alpine
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@pgadmin.com}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-password}
-      - POSTGRES_HOST=${POSTGRES_HOSTNAME:-db}
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER:-umami}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-umami}
-      - POSTGRES_DB=${POSTGRES_DB:-umami}
-      - PGADMIN_CONFIG_SERVER_MODE=False
-      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
-      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=${PGADMIN_CONFIG_CONSOLE_LOG_LEVEL:-10}
-      - GUNICORN_ACCESS_LOGFILE=${GUNICORN_ACCESS_LOGFILE:-None}
-    ports:
-      - ${PGADMIN_PORT:-5433}:80
-    volumes:
-      - ./pgadmin-entry.sh:/entrypoint_custom.sh
-    entrypoint: /entrypoint_custom.sh
-    user: root
+      - UMAMI_URL=http://umami:3000
+      - UMAMI_USERNAME=admin
+      - UMAMI_PASSWORD=umami
+      - UMAMI_WEBSITE_ID=${UMAMI_ID:-8c4453a6-4c48-4889-9e89-f3b4f13753bb}
+    command: >-
+      node -e "
+        fetch(process.env.UMAMI_URL + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: process.env.UMAMI_USERNAME, password: process.env.UMAMI_PASSWORD }),
+        })
+          .then(r => r.json())
+          .then(({ token }) => fetch(process.env.UMAMI_URL + '/api/websites', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: JSON.stringify({ id: process.env.UMAMI_WEBSITE_ID, name: 'Status', domain: 'localhost:8080' }),
+          }))
+          .then(r => r.json())
+          .then(console.log);
+      "
     depends_on:
-      db:
-        condition: service_healthy
       umami:
         condition: service_healthy
     profiles:
       - analytics
-  flyway:
-    image: flyway/flyway
-    environment:
-      - FLYWAY_BASELINE_ON_MIGRATE=true
-    command: -url=jdbc:postgresql://${POSTGRES_HOST:-db}:5432/${POSTGRES_DB:-umami} -schemas=public -user=${POSTGRES_USER:-umami} -password=${POSTGRES_PASSWORD:-umami} -connectRetries=60 -baselineVersion=1.0 migrate
-    volumes:
-      - .flyway:/flyway/sql
-    depends_on:
-      - pgadmin
-    profiles:
-      - analytics
+    restart: "no"
 volumes:
   umami-db-data:
