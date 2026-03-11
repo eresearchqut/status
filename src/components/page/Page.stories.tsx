@@ -125,12 +125,7 @@ AllSystemsOperational.args = {
         filter={ServiceStatus.OK}
       />
 
-      <PastIncidents
-        title="Past Incidents"
-        subTitle="Showing all past incidents in the last 6 months"
-        lastUpdated=""
-        incidents={data.past_incidents}
-      />
+      <PastIncidents title="Past Incidents" incidents={data.past_incidents} />
     </Stack>
   ),
 };
@@ -154,12 +149,7 @@ ServiceDisruptions.args = {
         filter={ServiceStatus.OK}
       />
 
-      <PastIncidents
-        title="Past Incidents"
-        subTitle="Showing all past incidents in the last 6 months"
-        lastUpdated=""
-        incidents={data.past_incidents}
-      />
+      <PastIncidents title="Past Incidents" incidents={data.past_incidents} />
     </Stack>
   ),
 };
@@ -181,12 +171,7 @@ PlannedMaintenances.args = {
         filter={ServiceStatus.OK}
       />
 
-      <PastIncidents
-        title="Past Incidents"
-        subTitle="Showing all past incidents in the last 6 months"
-        lastUpdated=""
-        incidents={data.past_incidents}
-      />
+      <PastIncidents title="Past Incidents" incidents={data.past_incidents} />
     </Stack>
   ),
 };

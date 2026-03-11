@@ -10,8 +10,6 @@ export interface Incident {
 
 export interface PastIncidentsProps {
   title: string;
-  subTitle: string;
-  lastUpdated: string;
   incidents: Incident[];
 }
 
