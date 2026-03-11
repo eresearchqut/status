@@ -10,40 +10,53 @@ const Template: StoryFn<typeof PastIncidents> = (args) => (
   <PastIncidents {...args} />
 );
 
-export const Simple = Template.bind({});
-Simple.args = {
-  title: "Past Incidents",
-  subTitle: "Showing all past incidents in the last 6 months",
-  lastUpdated: "2024-07-02T15:53:42+1000",
-  incidents: [
-    {
-      name: "PB Server",
-      impact: "Service disrupted",
-      reported: "2024-04-16T10:53:42+1000",
-      restored: "2024-04-17T10:53:42+1000",
-    },
-    {
-      name: "HPC-FS",
-      impact: "Scheduled maintenance",
-      reported: "2024-02-12T09:43:42+1000",
-      restored: "2024-02-13T09:53:42+1000",
-    },
-    {
-      name: "PB Server",
-      impact: "Service disrupted",
-      reported: "2023-12-13T06:33:42+1000",
-      restored: "2023-12-15T06:33:42+1000",
-    },
-    {
-      name: "HPC-FS",
-      impact: "Scheduled maintenance",
-      reported: "2023-10-19T07:33:32+1000",
-      restored: "2023-10-20T07:33:42+1000",
-    },
-  ],
+const getDateMonthsAgo = (months: number) => {
+  const d = new Date();
+  d.setMonth(d.getMonth() - months);
+  return d.toISOString();
 };
 
-export const NoDataAvailable = Template.bind({});
-NoDataAvailable.args = {
-  incidents: undefined,
+const getDateDaysAgo = (days: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d.toISOString();
+};
+
+export const SixInLastThreeMonths = Template.bind({});
+SixInLastThreeMonths.args = {
+  title: "Past Incidents",
+  incidents: Array.from({ length: 6 }).map((_, i) => ({
+    name: `Recent Incident ${i + 1}`,
+    impact: "Service disrupted",
+    reported: getDateDaysAgo((i + 1) * 10),
+    restored: getDateDaysAgo((i + 1) * 10 - 1),
+  })),
+};
+
+export const TwelveOlderThanTwelveMonths = Template.bind({});
+TwelveOlderThanTwelveMonths.args = {
+  title: "Past Incidents",
+  incidents: Array.from({ length: 12 }).map((_, i) => ({
+    name: `Old Incident ${i + 1}`,
+    impact: "Service disrupted",
+    reported: getDateMonthsAgo(13 + i),
+    restored: getDateMonthsAgo(13 + i),
+  })),
+};
+
+export const ZeroIncidents = Template.bind({});
+ZeroIncidents.args = {
+  title: "Past Incidents",
+  incidents: [],
+};
+
+export const SixIncidentsOnlyFirstInLastThreeMonths = Template.bind({});
+SixIncidentsOnlyFirstInLastThreeMonths.args = {
+  title: "Past Incidents",
+  incidents: Array.from({ length: 6 }).map((_, i) => ({
+    name: `Incident ${i + 1}`,
+    impact: "Service disrupted",
+    reported: i === 0 ? getDateDaysAgo(10) : getDateMonthsAgo(4 + i),
+    restored: i === 0 ? getDateDaysAgo(9) : getDateMonthsAgo(4 + i),
+  })),
 };

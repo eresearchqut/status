@@ -176,8 +176,6 @@ const Home: NextPage = () => {
           {incidentsData && incidentsData?.past_incidents?.length > 0 && (
             <PastIncidents
               title={"Past incidents"}
-              subTitle={"Showing all past incidents"}
-              lastUpdated={""}
               incidents={incidentsData.past_incidents}
             />
           )}
