@@ -5,3 +5,4 @@ http,   200,  Jupyter Hub,            https://jupyter.eres.qut.edu.au/hub/static
 port,   0,    HPC Aqua,               aquarius.qut.edu.au 22
 port,   0,    HPC-FS,                 hpc-fs.qut.edu.au 445
 port,   0,    RDSS,                   rdss.qut.edu.au 445
+http,   200,  Data Management Plan,   https://data-mgmt-plan.qut.edu.au/status

@@ -13,7 +13,7 @@ This Service Status Page provides real-time updates and historical data about th
 ### Components
 
 - Operational status - Displays operational services, if all services are operational, you will see a green banner `All systems are operational`.
-  
+
   ![image](https://github.com/user-attachments/assets/d4f824bd-410c-4ff7-82c5-47d47934d06e)
 
 - Service disruptions - Displays disrupted services with reported time and impact, only shows when there is at least one disrupted services.
@@ -30,7 +30,7 @@ This Service Status Page provides real-time updates and historical data about th
 
 ## Host Location
 
-[https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/) 
+[https://status.eres.qut.edu.au/](https://status.eres.qut.edu.au/)
 
 (Requires VPN if you are connected from external)
 
@@ -94,7 +94,7 @@ Scripts are either executed automatically when the build action is triggered by 
 - [startup.sh](./startup.sh) - Executes when new build action is triggered by commit and push. Calls 3 scripts above and setup a 60 seconds update interval for [status.sh](./status.sh).
 
 ## Updating Service Detail
-In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated. 
+In fact, there are no code modification required when services (name and address) need to be updated, unless health check method also need to be updated.
 
 Please make sure the updated information is correct. Services detail is located in [checks.csv](checks.csv). Columns are explained below as a table.
 
@@ -111,16 +111,16 @@ Values are separated by comma `,`. To update a `Service Name`, just go to [check
 Do not delete other records, please also maintain the format of the document to avoid issues, each service uses one line.
 
 #### Services Under Monitoring
-| # | Service Name     |
-|---|------------------|
-| 1 | eResearch Portal |
-| 2 | rVDI             |
-| 3 | XNAT             |
-| 4 | Jupyter Hub      |
-| 5 | HPC Lyra         |
-| 6 | HPC Aqua         |
-| 7 | HPC-FS           |
-| 8 | RDSS             |
+| # | Service Name         |
+|---|----------------------|
+| 1 | eResearch Portal     |
+| 2 | rVDI                 |
+| 3 | XNAT                 |
+| 4 | Jupyter Hub          |
+| 5 | HPC Aqua             |
+| 6 | HPC-FS               |
+| 7 | RDSS                 |
+| 8 | Data Management Plan |
 
 ## Updating Incidents Records - unplanned outages only
 There are two parts when updating incidents - [Current Incidents](#current-incidents) and [Past Incidents](#past-incidents). Current Incidents contains information of current system(s) outage, while Past Incidents contains the history of system(s) outage. Note: planned maintenance should not become current incidents or past incidents, they should stay as planned maintenance for the duration and be removed after the planned maintenance is over.
@@ -128,9 +128,9 @@ There are two parts when updating incidents - [Current Incidents](#current-incid
 ### Current Incidents
 Data for current incident is from [incidents.csv](incidents.csv). There are two formats accepted for different situations. When you open the file, you will either see an empty file means there are no reported ongoing incidents, and if you see date time, system and impact means a specific system is out of service currently.
 
-To update [incidents.csv](incidents.csv), In case any incident happens, remove the line "No ongoing incidents" and replace with the following format (values separated with a comma): 
+To update [incidents.csv](incidents.csv), In case any incident happens, remove the line "No ongoing incidents" and replace with the following format (values separated with a comma):
 
-`eResearch Portal, eResearch Portal disrupted, 2024-07-02T15:53:42+1000`. 
+`eResearch Portal, eResearch Portal disrupted, 2024-07-02T15:53:42+1000`.
 > **CAUTION:** To ensure accurate incident tracking, it is important that incident names align with the names of associated services. [Services Under Monitoring](#services-under-monitoring)
 
 #### Current Incidents Data Values Descriptions
